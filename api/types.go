@@ -1,13 +1,15 @@
-package bytebuilders
+package api
 
 import (
 	"gopkg.in/square/go-jose.v2/jwt"
 )
 
+// LicenseVerificationParams represents the license token for verification
 type LicenseVerificationParams struct {
 	Raw string `json:"raw"`
 }
 
+// License represents the product license for user
 type License struct {
 	Issuer           string           `json:"issuer,omitempty"`
 	Subject          string           `json:"subject,omitempty"`
@@ -26,6 +28,7 @@ type License struct {
 	CancelerID       *string          `json:"canceler_id"`
 }
 
+// SubscribedPlan represents included plans in the license
 type SubscribedPlan struct {
 	PlanID    string `json:"plan"`
 	ProductID string `json:"product"`
