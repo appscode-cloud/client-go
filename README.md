@@ -4,4 +4,6 @@
 [![Slack](https://slack.appscode.com/badge.svg)](https://slack.appscode.com)
 [![Twitter](https://img.shields.io/twitter/follow/ByteBuilders.svg?style=social&logo=twitter&label=Follow)](https://twitter.com/intent/follow?screen_name=ByteBuilders)
 
-# ByteBuilders Go Client
+# client-go
+
+Go client for [ByteBuilders](https://byte.builders).
