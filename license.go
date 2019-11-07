@@ -27,6 +27,25 @@ import (
 	"gopkg.in/square/go-jose.v2/jwt"
 )
 
+func (c *Client) GetLicensePlan(clusterID, productID string, productOwnerID int64) (bool, string) {
+	license, err := VerifyLicense(c.license)
+	if err != nil {
+		return false, ""
+	}
+
+	if license.Audience[0] != clusterID || license.Status != "active" ||
+		license.NotBefore.Time().Unix() > jwt.NewNumericDate(time.Now()).Time().Unix() ||
+		license.Expiry.Time().Unix() < jwt.NewNumericDate(time.Now()).Time().Unix() {
+		return false, ""
+	}
+	for _, plans := range license.SubscribedPlans {
+		if plans.ProductID == productID && plans.OwnerID == productOwnerID {
+			return true, plans.PlanID
+		}
+	}
+	return false, ""
+}
+
 // GetLicensePlan provides the plan corresponding to
 // product id and owner id if it's still valid
 func GetLicensePlan(token, clusterID, productID string, productOwnerID int64) (bool, string) {
