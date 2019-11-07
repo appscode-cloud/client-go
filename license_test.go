@@ -1,10 +1,10 @@
-package bytebuilders
+package client
 
 import (
 	"reflect"
 	"testing"
 
-	"github.com/bytebuilders/bytebuilders-client/api"
+	"go.bytebuilder.dev/client/api"
 )
 
 func TestVerifyLicense(t *testing.T) {

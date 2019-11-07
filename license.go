@@ -1,4 +1,4 @@
-package bytebuilders
+package client
 
 import (
 	"bytes"
@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/bytebuilders/bytebuilders-client/api"
+	"go.bytebuilder.dev/client/api"
 
 	"gopkg.in/square/go-jose.v2/jwt"
 )

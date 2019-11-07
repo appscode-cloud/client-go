@@ -1,4 +1,4 @@
-module github.com/bytebuilders/bytebuilders-client
+module go.bytebuilder.dev/client
 
 go 1.12
 
