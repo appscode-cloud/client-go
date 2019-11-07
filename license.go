@@ -21,7 +21,7 @@ import (
 	"net/http"
 	"time"
 
-	"go.bytebuilder.dev/client/api"
+	"go.bytebuilders.dev/client/api"
 
 	"gopkg.in/square/go-jose.v2/jwt"
 )

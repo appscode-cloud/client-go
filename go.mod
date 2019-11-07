@@ -1,4 +1,4 @@
-module go.bytebuilder.dev/client
+module go.bytebuilders.dev/client
 
 go 1.12
 

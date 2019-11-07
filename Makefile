@@ -15,7 +15,7 @@
 
 SHELL=/bin/bash -o pipefail
 
-GO_PKG   := go.bytebuilder.dev
+GO_PKG   := go.bytebuilders.dev
 REPO     := $(notdir $(shell pwd))
 BIN      := client
 

@@ -19,7 +19,7 @@ import (
 	"reflect"
 	"testing"
 
-	"go.bytebuilder.dev/client/api"
+	"go.bytebuilders.dev/client/api"
 )
 
 func TestVerifyLicense(t *testing.T) {
