@@ -26,7 +26,7 @@ import (
 	"strings"
 )
 
-var jsonHeader = http.Header{"Content-Type": []string{"application/json"}}
+var jsonHeader = http.Header{"Content-Type": []string{"application/json;charset=UTF-8"}}
 
 // Version return the library version
 func Version() string {
@@ -43,18 +43,22 @@ type Client struct {
 }
 
 // NewClient initializes and returns a API client.
-func NewClient(url, token, license string) *Client {
+func NewClient(accessToken, license string, baseURL ...string) *Client {
+	url := "https://byte.builders"
+	if len(baseURL) > 0 {
+		url = baseURL[0]
+	}
 	return &Client{
 		url:         strings.TrimSuffix(url, "/"),
-		accessToken: token,
+		accessToken: accessToken,
 		license:     license,
 		client:      &http.Client{},
 	}
 }
 
 // NewClientWithHTTP creates an API client with a custom http client
-func NewClientWithHTTP(url string, httpClient *http.Client) *Client {
-	client := NewClient(url, "", "")
+func NewClientWithHTTP(httpClient *http.Client, accessToken, license string, baseURL ...string) *Client {
+	client := NewClient(accessToken, license, baseURL...)
 	client.client = httpClient
 	return client
 }
@@ -70,7 +74,8 @@ func (c *Client) SetSudo(sudo string) {
 }
 
 func (c *Client) doRequest(method, path string, header http.Header, body io.Reader) (*http.Response, error) {
-	req, err := http.NewRequest(method, c.url+"/api/v1"+path, body)
+	path = strings.TrimPrefix(path, "/")
+	req, err := http.NewRequest(method, c.url+"/api/v1/"+path, body)
 	if err != nil {
 		return nil, err
 	}
@@ -103,13 +108,15 @@ func (c *Client) getResponse(method, path string, header http.Header, body io.Re
 	}
 
 	switch resp.StatusCode {
-	case 403:
+	case http.StatusUnauthorized:
+		return nil, errors.New("401 Unauthorized")
+	case http.StatusForbidden:
 		return nil, errors.New("403 Forbidden")
-	case 404:
+	case http.StatusNotFound:
 		return nil, errors.New("404 Not Found")
-	case 409:
+	case http.StatusConflict:
 		return nil, errors.New("409 Conflict")
-	case 422:
+	case http.StatusUnprocessableEntity:
 		return nil, fmt.Errorf("422 Unprocessable Entity: %s", string(data))
 	}
 
