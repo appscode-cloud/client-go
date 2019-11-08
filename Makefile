@@ -16,7 +16,7 @@
 SHELL=/bin/bash -o pipefail
 
 GO_PKG   := go.bytebuilders.dev
-REPO     := client
+REPO     := $(notdir $(shell pwd))
 BIN      := client
 
 # This version-strategy uses git tags to set the version string
@@ -45,7 +45,7 @@ endif
 
 SRC_DIRS := *.go api
 
-DOCKER_PLATFORMS := linux/amd64 linux/arm linux/arm64
+DOCKER_PLATFORMS := linux/amd64
 BIN_PLATFORMS    := $(DOCKER_PLATFORMS)
 
 # Used internally.  Users should pass GOOS and/or GOARCH.

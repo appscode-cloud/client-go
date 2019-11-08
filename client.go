@@ -1,5 +1,6 @@
 /*
-Copyright AppsCode Inc..
+Copyright 2019 AppsCode Inc.
+Copyright 2014 The Gogs Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -30,7 +31,7 @@ var jsonHeader = http.Header{"Content-Type": []string{"application/json;charset=
 
 // Version return the library version
 func Version() string {
-	return "0.0.1"
+	return "v0.0.1"
 }
 
 // Client represents a ByteBuilders api client
