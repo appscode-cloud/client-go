@@ -27,10 +27,29 @@ import (
 	"gopkg.in/square/go-jose.v2/jwt"
 )
 
+// VerifyLicense returns the verified license
+func (c *Client) VerifyLicense() (*api.License, error) {
+	apiPth := "/user/licenses/verify"
+	licenseToken := api.LicenseVerificationParams{
+		Raw: c.license,
+	}
+	jsonBytes, err := json.Marshal(licenseToken)
+	if err != nil {
+		return nil, err
+	}
+
+	license := new(api.License)
+	if err := c.getParsedResponse(http.MethodPost, apiPth, jsonHeader, bytes.NewReader(jsonBytes), license); err != nil {
+		return nil, err
+	}
+
+	return license, nil
+}
+
 // GetLicensePlan provides the plan corresponding to
 // product id and owner id if it's still valid
-func GetLicensePlan(token, clusterID, productID string, productOwnerID int64) (bool, string) {
-	license, err := VerifyLicense(token)
+func (c *Client) GetLicensePlan(clusterID, productID string, productOwnerID int64) (bool, string) {
+	license, err := c.VerifyLicense()
 	if err != nil {
 		return false, ""
 	}
@@ -46,36 +65,4 @@ func GetLicensePlan(token, clusterID, productID string, productOwnerID int64) (b
 		}
 	}
 	return false, ""
-}
-
-// VerifyLicense returns the verified license
-func VerifyLicense(token string) (*api.License, error) {
-	url := "https://byte.builders/api/v1/user/licenses/verify"
-	licenseToken := api.LicenseVerificationParams{
-		Raw: token,
-	}
-	jsonBytes, err := json.Marshal(licenseToken)
-	if err != nil {
-		return nil, err
-	}
-	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(jsonBytes))
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Authorization", "JWT "+token)
-	req.Header.Add("Content-Type", "application/json;charset=UTF-8")
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	license := new(api.License)
-	if err = json.NewDecoder(resp.Body).Decode(license); err != nil {
-		return nil, err
-	}
-
-	return license, nil
 }

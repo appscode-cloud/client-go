@@ -23,94 +23,116 @@ import (
 	"go.bytebuilders.dev/client/api"
 )
 
-func TestVerifyLicense(t *testing.T) {
-	type args struct {
-		token string
+func TestClient_VerifyLicense(t *testing.T) {
+	type fields struct {
+		url         string
+		accessToken string
+		license     string
 	}
 	tests := []struct {
 		name    string
-		args    args
+		fields  fields
 		want    *api.License
 		wantErr bool
 	}{
 		{
-			name: "Invalid license",
-			args: args{
-				token: "fkdsja.afdskjafldjajka.afdkjakdjagjk",
+			name: "InvalidLicenseVerification",
+			fields: fields{
+				url:     "http://localhost:3000",
+				license: "itsa.jwt.token",
 			},
 			want:    nil,
 			wantErr: true,
 		},
 		{
-			name: "Valid license",
-			args: args{
-				token: "eyJhbGciOiJS....idHlwIjoiSldUIn0.eyJhdWQiOlsiMWVmM.....RKRiIsInN1YiI6IjgifQ.kODX62cMpcjdNlJotuUSXC.....8FcFP_b8LlTG3lw",
+			name: "ValidLicenseVerification",
+			fields: fields{
+				url:     "http://localhost:3000/",
+				license: "eyJhbGciOiJS....idHlwIjoiSldUIn0.eyJhdWQiOlsiMWVmM.....RKRiIsInN1YiI6IjgifQ.kODX62cMpcjdNlJotuUSXC.....8FcFP_b8LlTG3lw",
 			},
-			want:    &api.License{},
+			want: &api.License{
+				Status: "active",
+			},
 			wantErr: false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := VerifyLicense(tt.args.token)
+			c := NewClient(tt.fields.accessToken, tt.fields.license, tt.fields.url)
+			got, err := c.VerifyLicense()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("VerifyLicense() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-
-			if err != nil {
-				if reflect.DeepEqual(got, nil) {
-					t.Errorf("VerifyLicense() got = %v, don't want %v", got, tt.want)
+			if tt.want != nil {
+				if got == nil || got.Status != tt.want.Status {
+					t.Errorf("VerifyLicense() got = %v, want %v", got, tt.want)
 				}
+			} else if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("VerifyLicense() got = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func TestGetLicensePlan(t *testing.T) {
+func TestClient_GetLicensePlan(t *testing.T) {
+	type fields struct {
+		url         string
+		accessToken string
+		license     string
+	}
 	type args struct {
-		token          string
 		clusterID      string
 		productID      string
 		productOwnerID int64
 	}
 	tests := []struct {
-		name  string
-		args  args
-		want  bool
-		want1 string
+		name   string
+		fields fields
+		args   args
+		valid  bool
+		planID string
 	}{
 		{
-			name: "InvalidGetLicensePlan",
+			name: "InvalidLicense",
+			fields: fields{
+				url:         "http://localhost:3000",
+				accessToken: "",
+				license:     "itsa.jwt.token",
+			},
 			args: args{
-				token:          "jsaflkdjas.fkasjdlakj.afdskja;lsf",
-				clusterID:      "kakjfksljdfkl-aflkdjak",
-				productID:      "akfdsjaklj",
+				clusterID:      "not-a-id",
+				productID:      "not-a-product-id",
 				productOwnerID: 0,
 			},
-			want:  false,
-			want1: "",
+			valid:  false,
+			planID: "",
 		},
 		{
-			name: "ValidGetLicensePlan",
+			name: "ValidLicense",
+			fields: fields{
+				url:         "http://localhost:3000",
+				accessToken: "",
+				license:     "eyJhbGciOiJS....idHlwIjoiSldUIn0.eyJhdWQiOlsiMWVmM.....RKRiIsInN1YiI6IjgifQ.kODX62cMpcjdNlJotuUSXC.....8FcFP_b8LlTG3lw",
+			},
 			args: args{
-				token:          "eyJhbGciOiJS....idHlwIjoiSldUIn0.eyJhdWQiOlsiMWVmM.....RKRiIsInN1YiI6IjgifQ.kODX62cMpcjdNlJotuUSXC.....8FcFP_b8LlTG3lw",
-				clusterID:      "1ef33b53-f4ff-4256-a4ff-7838bee07b31",
-				productID:      "prod_F..........Lb9",
+				clusterID:      "1ef33b53-...-....-7838bee07b31",
+				productID:      "pr..............Lb9",
 				productOwnerID: 8,
 			},
-			want:  true,
-			want1: "plan_G3..........v5",
+			valid:  true,
+			planID: "pl...............v5",
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, got1 := GetLicensePlan(tt.args.token, tt.args.clusterID, tt.args.productID, tt.args.productOwnerID)
-			if got != tt.want {
-				t.Errorf("GetLicensePlan() got = %v, want %v", got, tt.want)
+			c := NewClient(tt.fields.accessToken, tt.fields.license, tt.fields.url)
+			got, got1 := c.GetLicensePlan(tt.args.clusterID, tt.args.productID, tt.args.productOwnerID)
+			if got != tt.valid {
+				t.Errorf("GetLicensePlan() got = %v, want %v", got, tt.valid)
 			}
-			if got1 != tt.want1 {
-				t.Errorf("GetLicensePlan() got1 = %v, want %v", got1, tt.want1)
+			if got1 != tt.planID {
+				t.Errorf("GetLicensePlan() got1 = %v, want %v", got1, tt.planID)
 			}
 		})
 	}
