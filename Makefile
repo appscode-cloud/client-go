@@ -16,8 +16,8 @@
 SHELL=/bin/bash -o pipefail
 
 GO_PKG   := go.bytebuilders.dev
-REPO     := client
-BIN      := client
+REPO     := $(notdir $(shell pwd))
+BIN      := client-go
 
 # This version-strategy uses git tags to set the version string
 git_branch       := $(shell git rev-parse --abbrev-ref HEAD)
