@@ -19,6 +19,7 @@ package client
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -48,21 +49,26 @@ func (c *Client) VerifyLicense() (*api.License, error) {
 
 // GetLicensePlan provides the plan corresponding to
 // product id and owner id if it's still valid
-func (c *Client) GetLicensePlan(clusterID, productID string, productOwnerID int64) (bool, string) {
+func (c *Client) GetLicensePlan(clusterID, productID string, productOwnerID int64) (string, error) {
 	license, err := c.VerifyLicense()
 	if err != nil {
-		return false, ""
+		return "", err
 	}
 
-	if license.Audience[0] != clusterID || license.Status != "active" ||
-		license.NotBefore.Time().Unix() > jwt.NewNumericDate(time.Now()).Time().Unix() ||
-		license.Expiry.Time().Unix() < jwt.NewNumericDate(time.Now()).Time().Unix() {
-		return false, ""
+	if license.Audience[0] != clusterID {
+		return "", fmt.Errorf("license isn't issued for this cluster")
+	} else if license.Status != "active" {
+		return "", fmt.Errorf("license status isn't active, found: %s", license.Status)
+	} else if license.NotBefore.Time().Unix() > jwt.NewNumericDate(time.Now()).Time().Unix() {
+		return "", fmt.Errorf("license isn't active yet. It will be activated on %v", license.NotBefore.Time().UTC())
+	} else if license.Expiry.Time().Unix() < jwt.NewNumericDate(time.Now()).Time().Unix() {
+		return "", fmt.Errorf("license expired on: %v", license.Expiry.Time().UTC())
 	}
+
 	for _, plans := range license.SubscribedPlans {
 		if plans.ProductID == productID && plans.OwnerID == productOwnerID {
-			return true, plans.PlanID
+			return plans.PlanID, nil
 		}
 	}
-	return false, ""
+	return "", fmt.Errorf("license doesn't include this product")
 }

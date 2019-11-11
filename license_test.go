@@ -87,12 +87,13 @@ func TestClient_GetLicensePlan(t *testing.T) {
 		productOwnerID int64
 	}
 	tests := []struct {
-		name   string
-		fields fields
-		args   args
-		valid  bool
-		planID string
+		name    string
+		fields  fields
+		args    args
+		want    string
+		wantErr bool
 	}{
+		// TODO: Add test cases.
 		{
 			name: "InvalidLicense",
 			fields: fields{
@@ -105,8 +106,8 @@ func TestClient_GetLicensePlan(t *testing.T) {
 				productID:      "not-a-product-id",
 				productOwnerID: 0,
 			},
-			valid:  false,
-			planID: "",
+			want:    "",
+			wantErr: true,
 		},
 		{
 			name: "ValidLicense",
@@ -120,19 +121,20 @@ func TestClient_GetLicensePlan(t *testing.T) {
 				productID:      "pr..............Lb9",
 				productOwnerID: 8,
 			},
-			valid:  true,
-			planID: "pl...............v5",
+			want:    "pl...............v5",
+			wantErr: false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c := NewClient(tt.fields.accessToken, tt.fields.license, tt.fields.url)
-			got, got1 := c.GetLicensePlan(tt.args.clusterID, tt.args.productID, tt.args.productOwnerID)
-			if got != tt.valid {
-				t.Errorf("GetLicensePlan() got = %v, want %v", got, tt.valid)
+			got, err := c.GetLicensePlan(tt.args.clusterID, tt.args.productID, tt.args.productOwnerID)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("GetLicensePlan() error = %v, wantErr %v", err, tt.wantErr)
+				return
 			}
-			if got1 != tt.planID {
-				t.Errorf("GetLicensePlan() got1 = %v, want %v", got1, tt.planID)
+			if got != tt.want {
+				t.Errorf("GetLicensePlan() got = %v, want %v", got, tt.want)
 			}
 		})
 	}
