@@ -65,9 +65,18 @@ func (c *Client) GetLicensePlan(clusterID, productID string, productOwnerID int6
 		return "", fmt.Errorf("license expired on: %v", license.Expiry.Time().UTC())
 	}
 
-	for _, plans := range license.SubscribedPlans {
-		if plans.ProductID == productID && plans.OwnerID == productOwnerID {
-			return plans.PlanID, nil
+	plans, err := c.GetProductPlans(productID)
+	if err != nil {
+		return "", err
+	}
+
+	var planList = make(map[string]struct{})
+	for _, plan := range plans.Items {
+		planList[plan.Spec.NickName] = struct{}{}
+	}
+	for _, plan := range license.SubscribedPlans {
+		if _, ok := planList[plan]; ok {
+			return plan, nil
 		}
 	}
 	return "", fmt.Errorf("provided license doesn't include this product")
