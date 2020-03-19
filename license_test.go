@@ -14,12 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package client
+package client_test
 
 import (
 	"reflect"
 	"testing"
 
+	"go.bytebuilders.dev/client-go"
 	"go.bytebuilders.dev/client-go/api"
 )
 
@@ -48,7 +49,7 @@ func TestClient_VerifyLicense(t *testing.T) {
 			name: "ValidLicenseVerification",
 			fields: fields{
 				url:     "http://localhost:3000/",
-				license: "eyJhbGciOiJS....idHlwIjoiSldUIn0.eyJhdWQiOlsiMWVmM.....RKRiIsInN1YiI6IjgifQ.kODX62cMpcjdNlJotuUSXC.....8FcFP_b8LlTG3lw",
+				license: "eyJhbGci...OiJSUzIIn0.eyJhdWQiOlsib25sZS1...c3ViIjoiOCJ9.ZsDshA739P...OQzh6UOynsA",
 			},
 			want: &api.License{
 				Status: "active",
@@ -58,7 +59,7 @@ func TestClient_VerifyLicense(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			c := NewClient(tt.fields.accessToken, tt.fields.license, tt.fields.url)
+			c := client.NewClient(tt.fields.accessToken, tt.fields.license, tt.fields.url)
 			got, err := c.VerifyLicense()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("VerifyLicense() error = %v, wantErr %v", err, tt.wantErr)
@@ -93,7 +94,6 @@ func TestClient_GetLicensePlan(t *testing.T) {
 		want    string
 		wantErr bool
 	}{
-		// TODO: Add test cases.
 		{
 			name: "InvalidLicense",
 			fields: fields{
@@ -114,20 +114,20 @@ func TestClient_GetLicensePlan(t *testing.T) {
 			fields: fields{
 				url:         "http://localhost:3000",
 				accessToken: "",
-				license:     "eyJhbGciOiJS....idHlwIjoiSldUIn0.eyJhdWQiOlsiMWVmM.....RKRiIsInN1YiI6IjgifQ.kODX62cMpcjdNlJotuUSXC.....8FcFP_b8LlTG3lw",
+				license:     "eyJhbGci...OiJSUzIIn0.eyJhdWQiOlsib25sZS1...c3ViIjoiOCJ9.ZsDshA739P...OQzh6UOynsA",
 			},
 			args: args{
-				clusterID:      "1ef33b53-...-....-7838bee07b31",
-				productID:      "pr..............Lb9",
+				clusterID:      "only-name-and-number",
+				productID:      "prod_valid_id",
 				productOwnerID: 8,
 			},
-			want:    "pl...............v5",
+			want:    "plan_GnwGFLUOMYlmfJ",
 			wantErr: false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			c := NewClient(tt.fields.accessToken, tt.fields.license, tt.fields.url)
+			c := client.NewClient(tt.fields.accessToken, tt.fields.license, tt.fields.url)
 			got, err := c.GetLicensePlan(tt.args.clusterID, tt.args.productID, tt.args.productOwnerID)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("GetLicensePlan() error = %v, wantErr %v", err, tt.wantErr)

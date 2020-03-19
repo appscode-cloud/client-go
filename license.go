@@ -65,6 +65,15 @@ func (c *Client) GetLicensePlan(clusterID, productID string, productOwnerID int6
 		return "", fmt.Errorf("license expired on: %v", license.Expiry.Time().UTC())
 	}
 
+	prod, err := c.GetProductByID(productID)
+	if err != nil {
+		return "", err
+	}
+
+	if prod.Spec.Owner != productOwnerID {
+		return "", fmt.Errorf("product doesn't belong to provided ownber")
+	}
+
 	plans, err := c.GetProductPlans(productID)
 	if err != nil {
 		return "", err
@@ -72,7 +81,7 @@ func (c *Client) GetLicensePlan(clusterID, productID string, productOwnerID int6
 
 	var planList = make(map[string]struct{})
 	for _, plan := range plans.Items {
-		planList[plan.Spec.NickName] = struct{}{}
+		planList[plan.Spec.StripeID] = struct{}{}
 	}
 	for _, plan := range license.SubscribedPlans {
 		if _, ok := planList[plan]; ok {

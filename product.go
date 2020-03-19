@@ -12,7 +12,7 @@ func (c *Client) GetProductByID(productID string) (*v1alpha1.Product, error) {
 	apiPth := fmt.Sprintf("products/product_id/%s", productID)
 
 	product := new(v1alpha1.Product)
-	if err := c.getParsedResponse(http.MethodPost, apiPth, jsonHeader, nil, product); err != nil {
+	if err := c.getParsedResponse(http.MethodGet, apiPth, jsonHeader, nil, product); err != nil {
 		return nil, err
 	}
 
@@ -25,7 +25,7 @@ func (c *Client) GetProductByOwnerAndKey(owner, key string) (*v1alpha1.Product, 
 	apiPth := fmt.Sprintf("products/%s/%s", owner, key)
 
 	product := new(v1alpha1.Product)
-	if err := c.getParsedResponse(http.MethodPost, apiPth, jsonHeader, nil, product); err != nil {
+	if err := c.getParsedResponse(http.MethodGet, apiPth, jsonHeader, nil, product); err != nil {
 		return nil, err
 	}
 
