@@ -1,5 +1,5 @@
 /*
-Copyright 2019 AppsCode Inc.
+Copyright 2020 AppsCode Inc.
 Copyright 2014 The Gogs Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
