@@ -1,10 +1,10 @@
-module go.bytebuilders.dev/client-go
+module go.bytebuilders.dev/client
 
-go 1.13
+go 1.12
 
 require (
 	gopkg.in/square/go-jose.v2 v2.3.0
-	kubepack.dev/kubepack v0.0.0-20200309102428-adfab7802755
+	kubepack.dev/kubepack v0.0.0-20200320062112-ba4619fb1bf9
 )
 
 replace (

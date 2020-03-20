@@ -16,7 +16,7 @@
 SHELL=/bin/bash -o pipefail
 
 GO_PKG   := go.bytebuilders.dev
-REPO     := client
+REPO     := $(notdir $(shell pwd))
 BIN      := client-go
 
 # This version-strategy uses git tags to set the version string
@@ -43,7 +43,7 @@ endif
 ### These variables should not need tweaking.
 ###
 
-SRC_DIRS := *.go api
+SRC_DIRS := *.go api examples
 
 DOCKER_PLATFORMS := linux/amd64
 BIN_PLATFORMS    := $(DOCKER_PLATFORMS)
@@ -55,7 +55,7 @@ ARCH := $(if $(GOARCH),$(GOARCH),$(shell go env GOARCH))
 BASEIMAGE_PROD   ?= gcr.io/distroless/static
 BASEIMAGE_DBG    ?= debian:stretch
 
-GO_VERSION       ?= 1.14.0
+GO_VERSION       ?= 1.14.1
 BUILD_IMAGE      ?= appscode/golang-dev:$(GO_VERSION)
 
 OUTBIN = bin/$(OS)_$(ARCH)/$(BIN)

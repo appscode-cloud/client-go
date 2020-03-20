@@ -1,5 +1,5 @@
 /*
-Copyright 2019 AppsCode Inc.
+Copyright 2020 AppsCode Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package client_test
 import (
 	"testing"
 
-	"go.bytebuilders.dev/client-go"
+	"go.bytebuilders.dev/client"
 	"kubepack.dev/kubepack/apis/kubepack/v1alpha1"
 )
 

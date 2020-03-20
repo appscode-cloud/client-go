@@ -1,5 +1,5 @@
 /*
-Copyright 2019 AppsCode Inc.
+Copyright 2020 AppsCode Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import (
 	"net/http"
 	"time"
 
-	"go.bytebuilders.dev/client-go/api"
+	"go.bytebuilders.dev/client/api"
 	"gopkg.in/square/go-jose.v2/jwt"
 )
 

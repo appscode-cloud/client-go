@@ -89,7 +89,7 @@ k8s.io/klog
 k8s.io/kube-openapi/pkg/common
 # k8s.io/utils v0.0.0-20191010214722-8d271d903fe4 => k8s.io/utils v0.0.0-20190801114015-581e00157fb1
 k8s.io/utils/pointer
-# kubepack.dev/kubepack v0.0.0-20200309102428-adfab7802755
+# kubepack.dev/kubepack v0.0.0-20200320062112-ba4619fb1bf9
 kubepack.dev/kubepack/api/crds
 kubepack.dev/kubepack/apis/kubepack
 kubepack.dev/kubepack/apis/kubepack/v1alpha1
