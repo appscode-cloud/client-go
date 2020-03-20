@@ -34,7 +34,7 @@ type License struct {
 	NotBefore        *jwt.NumericDate `json:"not_before,omitempty"`
 	IssuedAt         *jwt.NumericDate `json:"issued_at,omitempty"`
 	ID               string           `json:"id,omitempty"`
-	SubscribedPlans  []SubscribedPlan `json:"subscribed_plans"`
+	SubscribedPlans  []string         `json:"subscribed_plans"`
 	SubscriptionID   string           `json:"subscription_id"`
 	SubscriptionName string           `json:"subscription_name"`
 	JWT              string           `json:"jwt"`
@@ -42,11 +42,4 @@ type License struct {
 	CanceledAt       *int64           `json:"canceled_at"`
 	IpAddress        *string          `json:"ip_address"`
 	CancelerID       *string          `json:"canceler_id"`
-}
-
-// SubscribedPlan represents included plans in the license
-type SubscribedPlan struct {
-	PlanID    string `json:"plan"`
-	ProductID string `json:"product"`
-	OwnerID   int64  `json:"owner"`
 }

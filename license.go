@@ -24,7 +24,6 @@ import (
 	"time"
 
 	"go.bytebuilders.dev/client-go/api"
-
 	"gopkg.in/square/go-jose.v2/jwt"
 )
 
@@ -65,9 +64,27 @@ func (c *Client) GetLicensePlan(clusterID, productID string, productOwnerID int6
 		return "", fmt.Errorf("license expired on: %v", license.Expiry.Time().UTC())
 	}
 
-	for _, plans := range license.SubscribedPlans {
-		if plans.ProductID == productID && plans.OwnerID == productOwnerID {
-			return plans.PlanID, nil
+	prod, err := c.GetProductByID(productID)
+	if err != nil {
+		return "", err
+	}
+
+	if prod.Spec.Owner != productOwnerID {
+		return "", fmt.Errorf("product doesn't belong to provided ownber")
+	}
+
+	plans, err := c.GetProductPlans(productID)
+	if err != nil {
+		return "", err
+	}
+
+	var planList = make(map[string]struct{})
+	for _, plan := range plans.Items {
+		planList[plan.Spec.StripeID] = struct{}{}
+	}
+	for _, plan := range license.SubscribedPlans {
+		if _, ok := planList[plan]; ok {
+			return plan, nil
 		}
 	}
 	return "", fmt.Errorf("provided license doesn't include this product")
