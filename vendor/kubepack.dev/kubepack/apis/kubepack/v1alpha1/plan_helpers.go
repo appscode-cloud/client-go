@@ -1,5 +1,5 @@
 /*
-Copyright The Kubepack Authors.
+Copyright AppsCode Inc. and Contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,11 +17,36 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"kubepack.dev/kubepack/api/crds"
+	"kubepack.dev/kubepack/apis"
+	"kubepack.dev/kubepack/crds"
 
-	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
+	"k8s.io/apimachinery/pkg/fields"
+	"kmodules.xyz/client-go/apiextensions"
 )
 
 func (_ Plan) CustomResourceDefinition() *apiextensions.CustomResourceDefinition {
 	return crds.MustCustomResourceDefinition(SchemeGroupVersion.WithResource(ResourcePlans))
+}
+
+func (plan *Plan) SetLabels(planID, prodID, phase string) {
+	labelMap := map[string]string{
+		apis.LabelPlanID:    planID,
+		apis.LabelProductID: prodID,
+		apis.LabelPlanPhase: phase,
+	}
+	plan.ObjectMeta.SetLabels(labelMap)
+}
+
+func (_ Plan) FormatLabels(planID, prodID, phase string) string {
+	labelMap := make(map[string]string)
+	if planID != "" {
+		labelMap[apis.LabelPlanID] = planID
+	}
+	if prodID != "" {
+		labelMap[apis.LabelProductID] = prodID
+	}
+	if phase != "" {
+		labelMap[apis.LabelPlanPhase] = phase
+	}
+	return fields.SelectorFromSet(labelMap).String()
 }
