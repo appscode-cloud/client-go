@@ -3,6 +3,7 @@ module go.bytebuilders.dev/client
 go 1.15
 
 require (
+	github.com/json-iterator/go v1.1.12 // indirect
 	gopkg.in/square/go-jose.v2 v2.2.2
 	kubepack.dev/kubepack v0.3.4-0.20210506045442-d90c54c3862a
 )
