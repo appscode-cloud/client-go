@@ -78,7 +78,7 @@ func (c *Client) GetLicensePlan(clusterID, productID string, productOwnerID int6
 		return "", err
 	}
 
-	var planList = make(map[string]struct{})
+	planList := make(map[string]struct{})
 	for _, plan := range plans.Items {
 		planList[plan.Spec.StripeID] = struct{}{}
 	}
