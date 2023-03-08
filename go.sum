@@ -157,8 +157,8 @@ github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82/go.mod h1:lgjkn3NuSvDf
 github.com/yudai/pp v2.0.1+incompatible h1:Q4//iY4pNF6yPLZIigmvcl7k/bPgrcTPIFIcmawg5bI=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
-go.bytebuilders.dev/resource-model v0.0.4-0.20230308121001-085f329e8766 h1:ULAhkQKZFS4It2taRoFj/iZIcPlM4GD+9GNw8Ojge/4=
-go.bytebuilders.dev/resource-model v0.0.4-0.20230308121001-085f329e8766/go.mod h1:3mTS2PEpvwC3FdlN8tPLIyoo9X5boROen3FTUjBNEPQ=
+go.bytebuilders.dev/resource-model v0.0.4-0.20230308133614-bded3cb56802 h1:X9HXxs4W6vipRkX90p/gbzbVHLAM8yOrMMpd3QN+CE4=
+go.bytebuilders.dev/resource-model v0.0.4-0.20230308133614-bded3cb56802/go.mod h1:3mTS2PEpvwC3FdlN8tPLIyoo9X5boROen3FTUjBNEPQ=
 go.opentelemetry.io/proto/otlp v0.7.0/go.mod h1:PqfVotwruBrMGOCsRd/89rSnXhoiJIqeYNgFYFoEGnI=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550/go.mod h1:yigFU9vqHzYiE8UmvKecakEJjdnWj3jj499lnFckfCI=

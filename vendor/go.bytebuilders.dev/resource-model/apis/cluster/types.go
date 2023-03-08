@@ -35,6 +35,7 @@ type ComponentOptions struct {
 	FluxCD        bool         `json:"fluxCD,omitempty"`
 	LicenseServer bool         `json:"licenseServer,omitempty"`
 	FeatureSets   []FeatureSet `json:"featureSets,omitempty"`
+	AllFeatures   bool         `json:"allFeatures,omitempty"`
 }
 
 type FeatureSet struct {
@@ -72,7 +73,6 @@ type ReconfigureOptions struct {
 }
 
 type RemovalOptions struct {
-	Name        string           `json:"name"`
-	Components  ComponentOptions `json:"components,omitempty"`
-	AllFeatures bool             `json:"allFeatures,omitempty"`
+	Name       string           `json:"name"`
+	Components ComponentOptions `json:"components,omitempty"`
 }

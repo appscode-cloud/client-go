@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/nats-io/nats.go v1.24.0
 	github.com/stretchr/testify v1.8.1
-	go.bytebuilders.dev/resource-model v0.0.4-0.20230308121001-085f329e8766
+	go.bytebuilders.dev/resource-model v0.0.4-0.20230308133614-bded3cb56802
 	gopkg.in/square/go-jose.v2 v2.5.1
 	k8s.io/apimachinery v0.25.3
 	kubepack.dev/kubepack v0.5.3-0.20221202122017-7e2dac11a985
