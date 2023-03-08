@@ -27,7 +27,6 @@ func TestClient_GetProductPlans(t *testing.T) {
 	type fields struct {
 		url         string
 		accessToken string
-		license     string
 	}
 	type args struct {
 		productID string
@@ -52,7 +51,7 @@ func TestClient_GetProductPlans(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			c := client.NewClient(tt.fields.accessToken, tt.fields.license, tt.fields.url)
+			c := client.NewClient(tt.fields.url).WithAccessToken(tt.fields.accessToken)
 			_, err := c.GetProductPlans(tt.args.productID)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("GetProductPlans() error = %v, wantErr %v", err, tt.wantErr)
@@ -66,7 +65,6 @@ func TestClient_GetProductPlan(t *testing.T) {
 	type fields struct {
 		url         string
 		accessToken string
-		license     string
 	}
 	type args struct {
 		productID string
@@ -93,7 +91,7 @@ func TestClient_GetProductPlan(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			c := client.NewClient(tt.fields.accessToken, tt.fields.license, tt.fields.url)
+			c := client.NewClient(tt.fields.url).WithAccessToken(tt.fields.accessToken)
 			got, err := c.GetProductPlan(tt.args.productID, tt.args.planID)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("GetProductPlan() error = %v, wantErr %v", err, tt.wantErr)

@@ -43,7 +43,7 @@ endif
 ### These variables should not need tweaking.
 ###
 
-SRC_DIRS := *.go api examples
+SRC_DIRS := api examples
 
 DOCKER_PLATFORMS := linux/amd64
 BIN_PLATFORMS    := $(DOCKER_PLATFORMS)
@@ -117,7 +117,7 @@ fmt: $(BUILD_DIRS)
 	    $(BUILD_IMAGE)                                          \
 	    /bin/bash -c "                                          \
 	        REPO_PKG=$(GO_PKG)/$(REPO)                          \
-	        ./hack/fmt.sh $(SRC_DIRS)                           \
+	        ./hack/fmt.sh $(SRC_DIRS) $(shell ls *.go)          \
 	    "
 
 build: $(OUTBIN)

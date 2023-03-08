@@ -25,15 +25,15 @@ import (
 
 func Example() {
 	license := "valid-license-string"
-	c := client.NewClient("", license)
-	lic, err := c.VerifyLicense()
+	c := client.NewClient("")
+	lic, err := c.VerifyLicense(license)
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println(lic.SubscribedPlans)
 
 	clusterID, prodID, prodOwnerID := "a-cluster-id", "product-id", int64(2)
-	planID, err := c.GetLicensePlan(clusterID, prodID, prodOwnerID)
+	planID, err := c.GetLicensePlan(license, clusterID, prodID, prodOwnerID)
 	if err != nil {
 		fmt.Printf("Subscribed plan: %s\n", planID)
 	} else {

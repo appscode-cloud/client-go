@@ -59,8 +59,8 @@ func TestClient_VerifyLicense(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			c := client.NewClient(tt.fields.accessToken, tt.fields.license, tt.fields.url)
-			got, err := c.VerifyLicense()
+			c := client.NewClient(tt.fields.url).WithAccessToken(tt.fields.accessToken)
+			got, err := c.VerifyLicense(tt.fields.license)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("VerifyLicense() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -127,8 +127,8 @@ func TestClient_GetLicensePlan(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			c := client.NewClient(tt.fields.accessToken, tt.fields.license, tt.fields.url)
-			got, err := c.GetLicensePlan(tt.args.clusterID, tt.args.productID, tt.args.productOwnerID)
+			c := client.NewClient(tt.fields.url).WithAccessToken(tt.fields.accessToken)
+			got, err := c.GetLicensePlan(tt.fields.license, tt.args.clusterID, tt.args.productID, tt.args.productOwnerID)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("GetLicensePlan() error = %v, wantErr %v", err, tt.wantErr)
 				return
