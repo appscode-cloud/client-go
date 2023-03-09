@@ -1,0 +1,165 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: bytebuilders
+  name: clusteruserauths.cluster.bytebuilders.dev
+spec:
+  group: cluster.bytebuilders.dev
+  names:
+    categories:
+    - kubernetes
+    - resource-model
+    - appscode
+    kind: ClusterUserAuth
+    listKind: ClusterUserAuthList
+    plural: clusteruserauths
+    singular: clusteruserauth
+  scope: Cluster
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              authProvider:
+                description: AuthProvider specifies a custom authentication plugin
+                  for the kubernetes cluster.
+                properties:
+                  config:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  name:
+                    type: string
+                required:
+                - name
+                type: object
+              aws:
+                properties:
+                  accessKeyID:
+                    type: string
+                  assumeRoleArn:
+                    type: string
+                  assumeRoleExternalID:
+                    type: string
+                  cache:
+                    type: boolean
+                  clusterID:
+                    type: string
+                  expiration:
+                    format: int64
+                    type: integer
+                  forwardSessionName:
+                    type: boolean
+                  region:
+                    type: string
+                  secretAccessKey:
+                    type: string
+                  sessionName:
+                    type: string
+                  token:
+                    description: Temporary Token for 15 mins only, if expired or not
+                      set create a new one
+                    type: string
+                required:
+                - accessKeyID
+                - secretAccessKey
+                type: object
+              clientCertificateData:
+                description: ClientCertificateData contains PEM-encoded data from
+                  a client cert file for TLS.
+                format: byte
+                type: string
+              clientKeyData:
+                description: ClientKeyData contains PEM-encoded data from a client
+                  key file for TLS.
+                format: byte
+                type: string
+              clusterUID:
+                type: string
+              googleOAuth:
+                properties:
+                  accessToken:
+                    type: string
+                  clientID:
+                    type: string
+                  clientSecret:
+                    type: string
+                  expiry:
+                    format: int64
+                    type: integer
+                  refreshToken:
+                    type: string
+                required:
+                - accessToken
+                - clientID
+                - clientSecret
+                type: object
+              impersonate:
+                description: Impersonate is the username to act-as.
+                type: string
+              impersonateGroups:
+                description: ImpersonateGroups is the groups to impersonate.
+                items:
+                  type: string
+                type: array
+              impersonateUserExtra:
+                additionalProperties:
+                  description: ExtraValue masks the value so protobuf can generate
+                  items:
+                    type: string
+                  type: array
+                description: ImpersonateUserExtra contains additional information
+                  for impersonated user.
+                type: object
+              password:
+                description: Password is the password for basic authentication to
+                  the kubernetes cluster.
+                type: string
+              provider:
+                description: Provider Access Token params
+                type: string
+              token:
+                description: Token is the bearer token for authentication to the kubernetes
+                  cluster.
+                type: string
+              userID:
+                format: int64
+                type: integer
+              username:
+                description: Username is the username for basic authentication to
+                  the kubernetes cluster.
+                type: string
+            required:
+            - clusterUID
+            - userID
+            type: object
+          status:
+            properties:
+              observedGeneration:
+                description: ObservedGeneration is the most recent generation observed
+                  for this resource. It corresponds to the resource's generation,
+                  which is updated on mutation by the API Server.
+                format: int64
+                type: integer
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

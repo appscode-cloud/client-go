@@ -17,6 +17,8 @@ limitations under the License.
 package api
 
 import (
+	"time"
+
 	"gopkg.in/square/go-jose.v2/jwt"
 )
 
@@ -42,4 +44,37 @@ type License struct {
 	CanceledAt       *int64           `json:"canceled_at"`
 	IpAddress        *string          `json:"ip_address"`
 	CancelerID       *string          `json:"canceler_id"`
+}
+
+type User struct {
+	// the user's id
+	ID int64 `json:"id"`
+	// the user's username
+	UserName string `json:"login"`
+	// the user's full name
+	FullName string `json:"full_name"`
+	// swagger:strfmt email
+	Email string `json:"email"`
+	// URL to the user's avatar
+	AvatarURL string `json:"avatar_url"`
+	// User locale
+	Language string `json:"language"`
+	// Is the user an administrator
+	IsAdmin bool `json:"is_admin"`
+	// swagger:strfmt date-time
+	LastLogin time.Time `json:"last_login,omitempty"`
+	// swagger:strfmt date-time
+	Created time.Time `json:"created,omitempty"`
+	// define individual user or organization
+	Type int `json:"type"`
+	// Is user active
+	IsActive bool `json:"active"`
+	// Is user login prohibited
+	ProhibitLogin bool `json:"prohibit_login"`
+	// the user's location
+	Location string `json:"location"`
+	// the user's website
+	Website string `json:"website"`
+	// the user's description
+	Description string `json:"description"`
 }

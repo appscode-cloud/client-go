@@ -28,10 +28,10 @@ import (
 )
 
 // VerifyLicense returns the verified license
-func (c *Client) VerifyLicense() (*api.License, error) {
+func (c *Client) VerifyLicense(licenseData string) (*api.License, error) {
 	apiPth := "/user/licenses/verify"
 	licenseToken := api.LicenseVerificationParams{
-		Raw: c.license,
+		Raw: licenseData,
 	}
 	jsonBytes, err := json.Marshal(licenseToken)
 	if err != nil {
@@ -48,8 +48,8 @@ func (c *Client) VerifyLicense() (*api.License, error) {
 
 // GetLicensePlan provides the plan corresponding to
 // product id and owner id if it's still valid
-func (c *Client) GetLicensePlan(clusterID, productID string, productOwnerID int64) (string, error) {
-	license, err := c.VerifyLicense()
+func (c *Client) GetLicensePlan(licenseData, clusterID, productID string, productOwnerID int64) (string, error) {
+	license, err := c.VerifyLicense(licenseData)
 	if err != nil {
 		return "", err
 	}
