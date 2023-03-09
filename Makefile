@@ -43,7 +43,8 @@ endif
 ### These variables should not need tweaking.
 ###
 
-SRC_DIRS := api examples
+SRC_PKGS := api examples # directories which hold app source (not vendored)
+SRC_DIRS := $(SRC_PKGS) *.go
 
 DOCKER_PLATFORMS := linux/amd64
 BIN_PLATFORMS    := $(DOCKER_PLATFORMS)
@@ -117,7 +118,7 @@ fmt: $(BUILD_DIRS)
 	    $(BUILD_IMAGE)                                          \
 	    /bin/bash -c "                                          \
 	        REPO_PKG=$(GO_PKG)/$(REPO)                          \
-	        ./hack/fmt.sh $(SRC_DIRS) $(shell ls *.go)          \
+	        ./hack/fmt.sh $(SRC_DIRS)                           \
 	    "
 
 build: $(OUTBIN)
@@ -167,7 +168,7 @@ test: $(BUILD_DIRS)
 	        ARCH=$(ARCH)                                        \
 	        OS=$(OS)                                            \
 	        VERSION=$(VERSION)                                  \
-	        ./hack/test.sh $(SRC_DIRS)                          \
+	        ./hack/test.sh $(SRC_PKGS)                          \
 	    "
 
 ADDTL_LINTERS   := goconst,gofmt,goimports,unparam

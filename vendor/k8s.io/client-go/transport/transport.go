@@ -36,9 +36,9 @@ import (
 // or transport level security defined by the provided Config.
 func New(config *Config) (http.RoundTripper, error) {
 	// Set transport level security
-	// if config.Transport != nil && (config.HasCA() || config.HasCertAuth() || config.HasCertCallback() || config.TLS.Insecure) {
-	// 	return nil, fmt.Errorf("using a custom transport with TLS certificate options or the insecure flag is not allowed")
-	// }
+	if config.Transport != nil && (config.HasCA() || config.HasCertAuth() || config.HasCertCallback() || config.TLS.Insecure) {
+		return nil, fmt.Errorf("using a custom transport with TLS certificate options or the insecure flag is not allowed")
+	}
 
 	if !isValidHolders(config) {
 		return nil, fmt.Errorf("misconfigured holder for dialer or cert callback")

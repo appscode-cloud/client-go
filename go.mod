@@ -4,11 +4,11 @@ go 1.18
 
 require (
 	github.com/nats-io/nats.go v1.24.0
-	github.com/stretchr/testify v1.8.1
-	go.bytebuilders.dev/resource-model v0.0.4-0.20230308133614-bded3cb56802
-	gopkg.in/square/go-jose.v2 v2.5.1
+	github.com/stretchr/testify v1.8.2
+	go.bytebuilders.dev/resource-model v0.0.4
+	gopkg.in/square/go-jose.v2 v2.6.0
 	k8s.io/apimachinery v0.25.3
-	kubepack.dev/kubepack v0.5.3-0.20221202122017-7e2dac11a985
+	kubepack.dev/kubepack v0.5.2
 )
 
 require (
@@ -61,39 +61,11 @@ require (
 	k8s.io/kube-openapi v0.0.0-20221207184640-f3cff1453715 // indirect
 	k8s.io/utils v0.0.0-20221128185143-99ec85e7a448 // indirect
 	kmodules.xyz/client-go v0.25.16 // indirect
-	sigs.k8s.io/application v0.8.2-0.20200306235134-f10d9ca8abd4 // indirect
-	sigs.k8s.io/controller-runtime v0.13.1 // indirect
+	sigs.k8s.io/application v0.0.0-00010101000000-000000000000 // indirect
+	sigs.k8s.io/controller-runtime v0.13.0 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.3 // indirect
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
 
-replace (
-	github.com/Masterminds/sprig/v3 => github.com/gomodules/sprig/v3 v3.2.3-0.20220405051441-0a8a99bac1b8
-	github.com/go-macaron/binding => github.com/wandrs/macaron-binding v0.0.0-20230110062729-4eaf15299d7a
-	github.com/go-macaron/cache => github.com/wandrs/macaron-cache v0.0.0-20230103152715-a7d496955824
-	github.com/imdario/mergo => github.com/imdario/mergo v0.3.6
-	github.com/renstrom/fuzzysearch => github.com/lithammer/fuzzysearch v1.0.1-0.20160331204855-2d205ac6ec17
-	helm.sh/helm/v3 => github.com/kubepack/helm/v3 v3.10.1-0.20220922170417-3a8110bacfda
-	k8s.io/client-go => github.com/kmodules/k8s-client-go v0.0.0-20221011065734-850c651fe75a
-	sigs.k8s.io/application => github.com/kmodules/application v0.8.4-0.20220917032906-876dc58b7366
-	sigs.k8s.io/aws-iam-authenticator => github.com/kmodules/aws-iam-authenticator v0.6.3-0.20230103180352-3adb0d1980d9
-)
-
-replace (
-	go.opencensus.io => go.opencensus.io v0.23.0
-	go.opentelemetry.io/contrib => go.opentelemetry.io/contrib v0.20.0
-	go.opentelemetry.io/contrib/instrumentation/github.com/emicklei/go-restful/otelrestful => go.opentelemetry.io/contrib/instrumentation/github.com/emicklei/go-restful/otelrestful v0.20.0
-	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc => go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.20.0
-	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp => go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.20.0
-	go.opentelemetry.io/contrib/propagators => go.opentelemetry.io/contrib/propagators v0.20.0
-	go.opentelemetry.io/otel => go.opentelemetry.io/otel v0.20.0
-	go.opentelemetry.io/otel/exporters/otlp => go.opentelemetry.io/otel/exporters/otlp v0.20.0
-	go.opentelemetry.io/otel/metric => go.opentelemetry.io/otel/metric v0.20.0
-	go.opentelemetry.io/otel/oteltest => go.opentelemetry.io/otel/oteltest v0.20.0
-	go.opentelemetry.io/otel/sdk => go.opentelemetry.io/otel/sdk v0.20.0
-	go.opentelemetry.io/otel/sdk/export/metric => go.opentelemetry.io/otel/sdk/export/metric v0.20.0
-	go.opentelemetry.io/otel/sdk/metric => go.opentelemetry.io/otel/sdk/metric v0.20.0
-	go.opentelemetry.io/otel/trace => go.opentelemetry.io/otel/trace v0.20.0
-	go.opentelemetry.io/proto/otlp => go.opentelemetry.io/proto/otlp v0.7.0
-)
+replace sigs.k8s.io/application => github.com/kmodules/application v0.8.4-0.20220917032906-876dc58b7366
