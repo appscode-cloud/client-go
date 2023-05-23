@@ -24,6 +24,7 @@ import (
 
 	clustermodel "go.bytebuilders.dev/resource-model/apis/cluster"
 	"go.bytebuilders.dev/resource-model/apis/cluster/v1alpha1"
+	"k8s.io/client-go/tools/clientcmd"
 )
 
 func (c *Client) CheckClusterExistence(opts clustermodel.CheckOptions) (*v1alpha1.ClusterInfo, error) {
@@ -112,6 +113,22 @@ func (c *Client) GetCluster(opts clustermodel.GetOptions) (*v1alpha1.ClusterInfo
 		return nil, err
 	}
 	return &cluster, nil
+}
+
+func (c *Client) GetClusterClientConfig(opts clustermodel.GetOptions) (clientcmd.ClientConfig, error) {
+	org, err := c.getOrganization()
+	if err != nil {
+		return nil, err
+	}
+	apiPath := fmt.Sprintf("/clusters/%s/%s/client-config", org, opts.Name)
+
+	var kubeConfig string
+	err = c.getParsedResponse(http.MethodGet, apiPath, jsonHeader, nil, &kubeConfig)
+	if err != nil {
+		return nil, err
+	}
+
+	return clientcmd.NewClientConfigFromBytes([]byte(kubeConfig))
 }
 
 func (c *Client) ConnectCluster(opts clustermodel.ConnectOptions) (*v1alpha1.ClusterInfo, error) {

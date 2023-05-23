@@ -17,6 +17,7 @@ limitations under the License.
 package client_test
 
 import (
+	"context"
 	"testing"
 	"time"
 
@@ -24,7 +25,9 @@ import (
 	"go.bytebuilders.dev/client"
 	clustermodel "go.bytebuilders.dev/resource-model/apis/cluster"
 	"go.bytebuilders.dev/resource-model/apis/cluster/v1alpha1"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
+	"k8s.io/client-go/kubernetes"
 )
 
 var (
@@ -119,6 +122,26 @@ func TestClient_CheckClusterAPIs(t *testing.T) {
 		assert.Equal(t, TestClusterDisplayName, cluster.Spec.DisplayName)
 		assert.Equal(t, TestClusterProvider, string(cluster.Spec.Provider))
 		assert.Equal(t, v1alpha1.ClusterPhaseActive, cluster.Status.Phase)
+	})
+
+	t.Run("GetClusterClientConfig() should return client-config for the cluster", func(t *testing.T) {
+		clientConfig, err := c.GetClusterClientConfig(clustermodel.GetOptions{
+			Name: TestClusterName,
+		})
+
+		assert.Nil(t, err)
+		assert.NotNil(t, clientConfig)
+
+		cfg, err := clientConfig.ClientConfig()
+		assert.Nil(t, err)
+
+		kc, err := kubernetes.NewForConfig(cfg)
+		assert.Nil(t, err)
+
+		pods, err := kc.CoreV1().Pods(v1.NamespaceSystem).List(context.Background(), v1.ListOptions{Limit: 1})
+		assert.Nil(t, err)
+
+		assert.Len(t, pods.Items, 1)
 	})
 
 	t.Run("ConnectCluster() should return Active status when the cluster is already connected", func(t *testing.T) {
