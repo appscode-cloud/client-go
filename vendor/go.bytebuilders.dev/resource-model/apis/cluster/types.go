@@ -29,13 +29,13 @@ type ProviderOptions struct {
 	Region        string `json:"region,omitempty"`
 	ResourceGroup string `json:"resourceGroup,omitempty"`
 	KubeConfig    string `json:"kubeConfig,omitempty"`
+	LinkID        string `json:"linkID,omitempty"`
 }
 
 type ComponentOptions struct {
-	FluxCD        bool         `json:"fluxCD,omitempty"`
-	LicenseServer bool         `json:"licenseServer,omitempty"`
-	FeatureSets   []FeatureSet `json:"featureSets,omitempty"`
-	AllFeatures   bool         `json:"allFeatures,omitempty"`
+	FluxCD      bool         `json:"fluxCD,omitempty"`
+	FeatureSets []FeatureSet `json:"featureSets,omitempty"`
+	AllFeatures bool         `json:"allFeatures,omitempty"`
 }
 
 type FeatureSet struct {

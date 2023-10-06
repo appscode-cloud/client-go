@@ -23,8 +23,10 @@ const (
 	LabelClusterOwnerID    = "byte.builders/cluster-owner-id"
 	LabelClusterProvider   = "byte.builders/cluster-provider"
 	LabelClusterImportType = "byte.builders/cluster-import-type"
+	LabelClusterExternalID = "byte.builders/cluster-external-id"
 
 	LabelClusterConnectorLinkID = "byte.builders/cluster-connector-link-id"
+	LabelTricksterReference     = "byte.builders/cluster"
 )
 
 const (

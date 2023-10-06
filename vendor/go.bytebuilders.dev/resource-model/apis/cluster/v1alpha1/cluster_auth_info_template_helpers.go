@@ -22,7 +22,7 @@ import (
 	"go.bytebuilders.dev/resource-model/apis/cluster"
 	"go.bytebuilders.dev/resource-model/crds"
 
-	"k8s.io/apimachinery/pkg/fields"
+	"k8s.io/apimachinery/pkg/labels"
 	"kmodules.xyz/client-go/apiextensions"
 )
 
@@ -30,7 +30,7 @@ func (_ ClusterAuthInfoTemplate) CustomResourceDefinition() *apiextensions.Custo
 	return crds.MustCustomResourceDefinition(SchemeGroupVersion.WithResource(ResourceClusterAuthInfoTemplates))
 }
 
-func (authTemplate *ClusterAuthInfoTemplate) SetLabels(opts ClusterOptions) {
+func (authTemplate *ClusterAuthInfoTemplate) ApplyLabels(opts ClusterOptions) {
 	labelMap := map[string]string{
 		cluster.LabelClusterUID:      opts.CID,
 		cluster.LabelClusterOwnerID:  strconv.FormatInt(opts.OwnerID, 10),
@@ -40,7 +40,7 @@ func (authTemplate *ClusterAuthInfoTemplate) SetLabels(opts ClusterOptions) {
 	authTemplate.ObjectMeta.SetLabels(labelMap)
 }
 
-func (_ ClusterAuthInfoTemplate) FormatLabels(opts ClusterOptions) string {
+func (_ ClusterAuthInfoTemplate) FormatLabels(opts ClusterOptions) labels.Selector {
 	labelMap := make(map[string]string)
 	if opts.CID != "" {
 		labelMap[cluster.LabelClusterUID] = opts.CID
@@ -52,5 +52,5 @@ func (_ ClusterAuthInfoTemplate) FormatLabels(opts ClusterOptions) string {
 		labelMap[cluster.LabelClusterProvider] = opts.Provider
 	}
 
-	return fields.SelectorFromSet(labelMap).String()
+	return labels.SelectorFromSet(labelMap)
 }

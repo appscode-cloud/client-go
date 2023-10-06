@@ -35,7 +35,7 @@ const (
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // +kubebuilder:object:root=true
-// +kubebuilder:resource:path=clusterauthinfotemplates,singular=clusterauthinfotemplate,scope=Cluster,categories={kubernetes,resource-model,appscode}
+// +kubebuilder:resource:path=clusterauthinfotemplates,singular=clusterauthinfotemplate,shortName=cauth,scope=Cluster,categories={kubernetes,resource-model,appscode}
 // +kubebuilder:subresource:status
 type ClusterAuthInfoTemplate struct {
 	metav1.TypeMeta   `json:",inline"`

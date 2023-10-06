@@ -26,7 +26,7 @@ import "k8s.io/apimachinery/pkg/runtime/generated.proto";
 import "k8s.io/apimachinery/pkg/runtime/schema/generated.proto";
 
 // Package-wide variables from generator "generated".
-option go_package = "v1alpha1";
+option go_package = "go.bytebuilders.dev/resource-model/apis/cluster/v1alpha1";
 
 message AWSProvider {
   // +optional
@@ -71,7 +71,7 @@ message AuthProviderConfig {
 }
 
 // +kubebuilder:object:root=true
-// +kubebuilder:resource:path=clusterauthinfotemplates,singular=clusterauthinfotemplate,scope=Cluster,categories={kubernetes,resource-model,appscode}
+// +kubebuilder:resource:path=clusterauthinfotemplates,singular=clusterauthinfotemplate,shortName=cauth,scope=Cluster,categories={kubernetes,resource-model,appscode}
 // +kubebuilder:subresource:status
 message ClusterAuthInfoTemplate {
   optional k8s.io.apimachinery.pkg.apis.meta.v1.ObjectMeta metadata = 1;
@@ -141,7 +141,7 @@ message ClusterAuthInfoTemplateStatus {
 }
 
 // +kubebuilder:object:root=true
-// +kubebuilder:resource:path=clusterinfos,singular=clusterinfo,scope=Cluster,categories={kubernetes,resource-model,appscode}
+// +kubebuilder:resource:path=clusterinfos,singular=clusterinfo,shortName=cinfo,scope=Cluster,categories={kubernetes,resource-model,appscode}
 // +kubebuilder:subresource:status
 message ClusterInfo {
   optional k8s.io.apimachinery.pkg.apis.meta.v1.ObjectMeta metadata = 1;
@@ -206,6 +206,14 @@ message ClusterInfoStatus {
   // Phase represents current status of the cluster
   // +optional
   optional string phase = 2;
+
+  // Reason explains the reason behind the cluster current phase
+  // +optional
+  optional string reason = 3;
+
+  // Message specifies additional information regarding the possible actions for the user
+  // +optional
+  optional string message = 4;
 }
 
 message ClusterOptions {
@@ -221,11 +229,13 @@ message ClusterOptions {
 
   optional string importType = 6;
 
-  optional string connectorLinkID = 7;
+  optional string externalID = 7;
+
+  optional string connectorLinkID = 8;
 }
 
 // +kubebuilder:object:root=true
-// +kubebuilder:resource:path=clusteruserauths,singular=clusteruserauth,scope=Cluster,categories={kubernetes,resource-model,appscode}
+// +kubebuilder:resource:path=clusteruserauths,singular=clusteruserauth,shortName=uauth,scope=Cluster,categories={kubernetes,resource-model,appscode}
 // +kubebuilder:subresource:status
 message ClusterUserAuth {
   optional k8s.io.apimachinery.pkg.apis.meta.v1.ObjectMeta metadata = 1;
@@ -288,7 +298,11 @@ message ClusterUserAuthSpec {
 
   optional GoogleOAuthProvider googleOAuth = 13;
 
-  optional AWSProvider aws = 14;
+  optional GoogleCloudCredential googleCloud = 14;
+
+  optional AWSProvider aws = 15;
+
+  optional string credentialName = 16;
 }
 
 message ClusterUserAuthStatus {
@@ -305,6 +319,12 @@ message ExtraValue {
   // items, if empty, will result in an empty slice
 
   repeated string items = 1;
+}
+
+message GoogleCloudCredential {
+  optional string projectID = 1;
+
+  optional string serviceAccount = 2;
 }
 
 message GoogleOAuthProvider {

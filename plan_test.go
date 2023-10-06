@@ -20,7 +20,7 @@ import (
 	"testing"
 
 	"go.bytebuilders.dev/client"
-	"kubepack.dev/kubepack/apis/kubepack/v1alpha1"
+	"x-helm.dev/apimachinery/apis/products/v1alpha1"
 )
 
 func TestClient_GetProductPlans(t *testing.T) {

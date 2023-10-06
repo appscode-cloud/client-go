@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"kubepack.dev/kubepack/apis/kubepack/v1alpha1"
+	"x-helm.dev/apimachinery/apis/products/v1alpha1"
 )
 
 // GetProductByID provides the product associated with the product id

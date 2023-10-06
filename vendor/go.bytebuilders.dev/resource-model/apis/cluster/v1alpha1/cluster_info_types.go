@@ -18,6 +18,7 @@ package v1alpha1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	kmapi "kmodules.xyz/client-go/api/v1"
 )
 
 const (
@@ -49,7 +50,7 @@ const (
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // +kubebuilder:object:root=true
-// +kubebuilder:resource:path=clusterinfos,singular=clusterinfo,scope=Cluster,categories={kubernetes,resource-model,appscode}
+// +kubebuilder:resource:path=clusterinfos,singular=clusterinfo,shortName=cinfo,scope=Cluster,categories={kubernetes,resource-model,appscode}
 // +kubebuilder:subresource:status
 type ClusterInfo struct {
 	metav1.TypeMeta   `json:",inline"`
@@ -140,4 +141,9 @@ type ClusterInfoStatus struct {
 	// Message specifies additional information regarding the possible actions for the user
 	// +optional
 	Message string `json:"message,omitempty" protobuf:"bytes,4,opt,name=message"`
+	// +optional
+	ClusterManagers []string `json:"clusterManagers,omitempty"`
+	// CAPIClusterInfo contains capi cluster information if the cluster is created by cluster-api
+	// +optional
+	CAPIClusterInfo *kmapi.CAPIClusterInfo `json:"capiClusterInfo,omitempty"`
 }

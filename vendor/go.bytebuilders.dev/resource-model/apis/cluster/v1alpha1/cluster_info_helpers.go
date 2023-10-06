@@ -22,7 +22,7 @@ import (
 	"go.bytebuilders.dev/resource-model/apis/cluster"
 	"go.bytebuilders.dev/resource-model/crds"
 
-	"k8s.io/apimachinery/pkg/fields"
+	"k8s.io/apimachinery/pkg/labels"
 	"kmodules.xyz/client-go/apiextensions"
 )
 
@@ -33,20 +33,22 @@ type ClusterOptions struct {
 	CID             string `protobuf:"bytes,4,opt,name=cID"`
 	OwnerID         int64  `protobuf:"varint,5,opt,name=ownerID"`
 	ImportType      string `protobuf:"bytes,6,opt,name=importType"`
-	ConnectorLinkID string `protobuf:"bytes,7,opt,name=connectorLinkID"`
+	ExternalID      string `protobuf:"bytes,7,opt,name=externalID"`
+	ConnectorLinkID string `protobuf:"bytes,8,opt,name=connectorLinkID"`
 }
 
 func (_ ClusterInfo) CustomResourceDefinition() *apiextensions.CustomResourceDefinition {
 	return crds.MustCustomResourceDefinition(SchemeGroupVersion.WithResource(ResourceClusterInfos))
 }
 
-func (clusterInfo *ClusterInfo) SetLabels(opts ClusterOptions) {
+func (clusterInfo *ClusterInfo) ApplyLabels(opts ClusterOptions) {
 	labelMap := map[string]string{
 		cluster.LabelResourceName:      opts.ResourceName,
 		cluster.LabelClusterUID:        opts.CID,
 		cluster.LabelClusterOwnerID:    strconv.FormatInt(opts.OwnerID, 10),
 		cluster.LabelClusterProvider:   opts.Provider,
 		cluster.LabelClusterImportType: opts.ImportType,
+		cluster.LabelClusterExternalID: opts.ExternalID,
 	}
 
 	if len(opts.ConnectorLinkID) > 0 {
@@ -57,7 +59,7 @@ func (clusterInfo *ClusterInfo) SetLabels(opts ClusterOptions) {
 	clusterInfo.ObjectMeta.SetLabels(labelMap)
 }
 
-func (_ ClusterInfo) FormatLabels(opts ClusterOptions) string {
+func (_ ClusterInfo) FormatLabels(opts ClusterOptions) labels.Selector {
 	labelMap := make(map[string]string)
 	if opts.ResourceName != "" {
 		labelMap[cluster.LabelResourceName] = opts.ResourceName
@@ -74,9 +76,12 @@ func (_ ClusterInfo) FormatLabels(opts ClusterOptions) string {
 	if opts.ImportType != "" {
 		labelMap[cluster.LabelClusterImportType] = opts.ImportType
 	}
+	if opts.ExternalID != "" {
+		labelMap[cluster.LabelClusterExternalID] = opts.ExternalID
+	}
 	if opts.ConnectorLinkID != "" {
 		labelMap[cluster.LabelClusterConnectorLinkID] = opts.ConnectorLinkID
 	}
 
-	return fields.SelectorFromSet(labelMap).String()
+	return labels.SelectorFromSet(labelMap)
 }
