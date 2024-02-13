@@ -43,93 +43,91 @@ const (
 // +kubebuilder:subresource:status
 type ClusterUserAuth struct {
 	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
-	Spec              ClusterUserAuthSpec   `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
-	Status            ClusterUserAuthStatus `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+	Spec              ClusterUserAuthSpec   `json:"spec,omitempty"`
+	Status            ClusterUserAuthStatus `json:"status,omitempty"`
 }
 
 type ClusterUserAuthSpec struct {
-	ClusterUID string `json:"clusterUID" protobuf:"bytes,1,opt,name=clusterUID"`
-	UserID     int64  `json:"userID" protobuf:"bytes,2,opt,name=userID"`
+	ClusterUID string `json:"clusterUID"`
+	UserID     int64  `json:"userID"`
 
 	// ClientCertificateData contains PEM-encoded data from a client cert file for TLS.
 	// +optional
-	ClientCertificateData []byte `json:"clientCertificateData,omitempty" protobuf:"bytes,3,opt,name=clientCertificateData"`
+	ClientCertificateData []byte `json:"clientCertificateData,omitempty"`
 	// ClientKeyData contains PEM-encoded data from a client key file for TLS.
 	// +optional
-	ClientKeyData []byte `json:"clientKeyData,omitempty" protobuf:"bytes,4,opt,name=clientKeyData"`
+	ClientKeyData []byte `json:"clientKeyData,omitempty"`
 	// Token is the bearer token for authentication to the kubernetes cluster.
 	// +optional
-	Token string `json:"token,omitempty" protobuf:"bytes,5,opt,name=token"`
+	Token string `json:"token,omitempty"`
 	// Username is the username for basic authentication to the kubernetes cluster.
 	// +optional
-	Username string `json:"username,omitempty" protobuf:"bytes,6,opt,name=username"`
+	Username string `json:"username,omitempty"`
 	// Password is the password for basic authentication to the kubernetes cluster.
 	// +optional
-	Password string `json:"password,omitempty" protobuf:"bytes,7,opt,name=password"`
+	Password string `json:"password,omitempty"`
 
 	// Impersonate is the username to act-as.
 	// +optional
-	Impersonate string `json:"impersonate,omitempty" protobuf:"bytes,8,opt,name=impersonate"`
+	Impersonate string `json:"impersonate,omitempty"`
 	// ImpersonateGroups is the groups to impersonate.
 	// +optional
-	ImpersonateGroups []string `json:"impersonateGroups,omitempty" protobuf:"bytes,9,rep,name=impersonateGroups"`
+	ImpersonateGroups []string `json:"impersonateGroups,omitempty"`
 	// ImpersonateUserExtra contains additional information for impersonated user.
 	// +optional
-	ImpersonateUserExtra map[string]ExtraValue `json:"impersonateUserExtra,omitempty" protobuf:"bytes,10,rep,name=impersonateUserExtra"`
+	ImpersonateUserExtra map[string]ExtraValue `json:"impersonateUserExtra,omitempty"`
 
 	// AuthProvider specifies a custom authentication plugin for the kubernetes cluster.
 	// +optional
-	AuthProvider *AuthProviderConfig `json:"authProvider,omitempty" protobuf:"bytes,11,opt,name=authProvider"`
+	AuthProvider *AuthProviderConfig `json:"authProvider,omitempty"`
 
 	// Provider Access Token params
 	// +optional
-	Provider       TokenProviderName      `json:"provider,omitempty" protobuf:"bytes,12,opt,name=provider,casttype=TokenProviderName"`
-	GoogleOAuth    *GoogleOAuthProvider   `json:"googleOAuth,omitempty" protobuf:"bytes,13,opt,name=googleOAuth"`
-	GoogleCloud    *GoogleCloudCredential `json:"googleCloud,omitempty" protobuf:"bytes,14,opt,name=googleCloud"`
-	AWS            *AWSProvider           `json:"aws,omitempty" protobuf:"bytes,15,opt,name=aws"`
-	CredentialName string                 `json:"credentialName,omitempty" protobuf:"bytes,16,opt,name=credentialName"`
+	Provider       TokenProviderName      `json:"provider,omitempty"`
+	GoogleOAuth    *GoogleOAuthProvider   `json:"googleOAuth,omitempty"`
+	GoogleCloud    *GoogleCloudCredential `json:"googleCloud,omitempty"`
+	AWS            *AWSProvider           `json:"aws,omitempty"`
+	CredentialName string                 `json:"credentialName,omitempty"`
 }
 
 type GoogleCloudCredential struct {
-	ProjectID      string `json:"projectID" protobuf:"bytes,1,opt,name=projectID"`
-	ServiceAccount string `json:"serviceAccount" protobuf:"bytes,2,opt,name=serviceAccount"`
+	ProjectID      string `json:"projectID"`
+	ServiceAccount string `json:"serviceAccount"`
 }
 
 type GoogleOAuthProvider struct {
-	ClientID     string `json:"clientID" protobuf:"bytes,1,opt,name=clientID"`
-	ClientSecret string `json:"clientSecret" protobuf:"bytes,2,opt,name=clientSecret"`
-	AccessToken  string `json:"accessToken" protobuf:"bytes,3,opt,name=accessToken"`
+	AccessToken string `json:"accessToken"`
 	// +optional
-	RefreshToken string `json:"refreshToken,omitempty" protobuf:"bytes,4,opt,name=refreshToken"`
+	RefreshToken string `json:"refreshToken,omitempty"`
 	// +optional
-	Expiry int64 `json:"expiry,omitempty" protobuf:"bytes,5,opt,name=expiry"`
+	Expiry int64 `json:"expiry,omitempty"`
 }
 
 type AWSProvider struct {
 	// +optional
-	Region string `json:"region" protobuf:"bytes,1,opt,name=region"`
+	Region string `json:"region"`
 	// +optional
-	ClusterID string `json:"clusterID" protobuf:"bytes,2,opt,name=clusterID"`
+	ClusterID string `json:"clusterID"`
 	// +optional
-	AssumeRoleARN string `json:"assumeRoleArn" protobuf:"bytes,3,opt,name=assumeRoleArn"`
+	AssumeRoleARN string `json:"assumeRoleArn"`
 	// +optional
-	AssumeRoleExternalID string `json:"assumeRoleExternalID" protobuf:"bytes,4,opt,name=assumeRoleExternalID"`
+	AssumeRoleExternalID string `json:"assumeRoleExternalID"`
 	// +optional
-	SessionName string `json:"sessionName" protobuf:"bytes,5,opt,name=sessionName"`
+	SessionName string `json:"sessionName"`
 	// +optional
-	ForwardSessionName bool `json:"forwardSessionName" protobuf:"bytes,6,opt,name=forwardSessionName"`
+	ForwardSessionName bool `json:"forwardSessionName"`
 	// +optional
-	Cache bool `json:"cache" protobuf:"bytes,7,opt,name=cache"`
+	Cache bool `json:"cache"`
 
 	// Temporary Token for 15 mins only, if expired or not set create a new one
 	// +optional
-	Token string `json:"token,omitempty" protobuf:"bytes,8,opt,name=token"`
+	Token string `json:"token,omitempty"`
 	// +optional
-	Expiration int64 `json:"expiration,omitempty" protobuf:"varint,9,opt,name=expiration"`
+	Expiration int64 `json:"expiration,omitempty"`
 
-	AccessKeyID     string `json:"accessKeyID" protobuf:"bytes,10,opt,name=accessKeyID"`
-	SecretAccessKey string `json:"secretAccessKey" protobuf:"bytes,11,opt,name=secretAccessKey"`
+	AccessKeyID     string `json:"accessKeyID"`
+	SecretAccessKey string `json:"secretAccessKey"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -137,13 +135,13 @@ type AWSProvider struct {
 
 type ClusterUserAuthList struct {
 	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
-	Items           []ClusterUserAuth `json:"items,omitempty" protobuf:"bytes,2,rep,name=items"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ClusterUserAuth `json:"items,omitempty"`
 }
 
 type ClusterUserAuthStatus struct {
 	// ObservedGeneration is the most recent generation observed for this resource. It corresponds to the
 	// resource's generation, which is updated on mutation by the API Server.
 	// +optional
-	ObservedGeneration int64 `json:"observedGeneration,omitempty" protobuf:"varint,1,opt,name=observedGeneration"`
+	ObservedGeneration int64 `json:"observedGeneration,omitempty"`
 }

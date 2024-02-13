@@ -18,7 +18,7 @@ package v1alpha1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	kmapi "kmodules.xyz/client-go/api/v1"
+	rsapi "kmodules.xyz/resource-metadata/apis/meta/v1alpha1"
 )
 
 const (
@@ -54,96 +54,46 @@ const (
 // +kubebuilder:subresource:status
 type ClusterInfo struct {
 	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
-	Spec              ClusterInfoSpec   `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
-	Status            ClusterInfoStatus `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+	Spec              ClusterInfoSpec             `json:"spec,omitempty"`
+	Status            rsapi.ClusterStatusResponse `json:"status,omitempty"`
 }
 
 type ClusterInfoSpec struct {
-	DisplayName string `json:"displayName" protobuf:"bytes,1,opt,name=displayName"`
-	Name        string `json:"name" protobuf:"bytes,2,opt,name=name"`
-	UID         string `json:"uid" protobuf:"bytes,3,opt,name=uid"`
-	OwnerID     int64  `json:"ownerID" protobuf:"varint,4,opt,name=ownerID"`
+	DisplayName string `json:"displayName"`
+	Name        string `json:"name"`
+	UID         string `json:"uid"`
+	OwnerID     int64  `json:"ownerID"`
 	//+optional
-	ExternalID string `json:"externalID,omitempty" protobuf:"bytes,5,opt,name=externalID"`
+	ExternalID string `json:"externalID,omitempty"`
 	//+optional
-	OwnerName string `json:"ownerName,omitempty" protobuf:"bytes,6,opt,name=ownerName"`
+	OwnerName string `json:"ownerName,omitempty"`
 
 	//+optional
-	Provider ProviderName `json:"provider,omitempty" protobuf:"bytes,7,opt,name=provider,casttype=ProviderName"`
+	Provider ProviderName `json:"provider,omitempty"`
 	//+optional
-	Endpoint string `json:"endpoint,omitempty" protobuf:"bytes,8,opt,name=endpoint"`
+	Endpoint string `json:"endpoint,omitempty"`
 	//+optional
-	Location string `json:"location,omitempty" protobuf:"bytes,9,opt,name=location"`
+	Location string `json:"location,omitempty"`
 	//+optional
-	Project string `json:"project,omitempty" protobuf:"bytes,10,opt,name=project"`
+	Project string `json:"project,omitempty"`
 	//+optional
-	KubernetesVersion string `json:"kubernetesVersion" protobuf:"bytes,11,opt,name=kubernetesVersion"`
+	KubernetesVersion string `json:"kubernetesVersion"`
 	//+optional
-	NodeCount int32 `json:"nodeCount" protobuf:"varint,12,opt,name=nodeCount"`
+	NodeCount int32 `json:"nodeCount"`
 
 	//+optional
-	CreatedAt int64 `json:"createdAt,omitempty" protobuf:"varint,13,opt,name=createdAt"`
+	CreatedAt int64 `json:"createdAt,omitempty"`
 
 	//+optional
-	Age string `json:"age,omitempty" protobuf:"bytes,14,opt,name=age"`
+	Age string `json:"age,omitempty"`
 }
-
-type ClusterPhase string
-
-const (
-	ClusterPhaseActive       ClusterPhase = "Active"
-	ClusterPhaseInactive     ClusterPhase = "Inactive"
-	ClusterPhaseNotReady     ClusterPhase = "NotReady"
-	ClusterPhaseNotConnected ClusterPhase = "NotConnected"
-	ClusterPhaseRegistered   ClusterPhase = "Registered"
-	ClusterPhaseNotImported  ClusterPhase = "NotImported"
-
-	// keeping old phases for backward compatibility. all new codes should use new phases.
-
-	// Deprecated. Use "Active" phase instead.
-	ClusterPhaseConnected ClusterPhase = "Connected"
-	// Deprecated. Use "Inactive" phase instead.
-	ClusterPhaseDisconnected ClusterPhase = "Disconnected"
-	// Deprecated. Move to relevant new phase.
-	ClusterPhasePrivateConnected ClusterPhase = "PrivateConnected"
-)
-
-type ClusterPhaseReason string
-
-const (
-	ClusterNotFound  ClusterPhaseReason = "ClusterNotFound"
-	AuthIssue        ClusterPhaseReason = "AuthIssue"
-	MissingComponent ClusterPhaseReason = "MissingComponent"
-	ReasonUnknown    ClusterPhaseReason = "Unknown"
-)
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:object:root=true
 
 type ClusterInfoList struct {
 	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
-	Items           []ClusterInfo `json:"items,omitempty" protobuf:"bytes,2,rep,name=items"`
-}
-
-type ClusterInfoStatus struct {
-	// ObservedGeneration is the most recent generation observed for this resource. It corresponds to the
-	// resource's generation, which is updated on mutation by the API Server.
-	// +optional
-	ObservedGeneration int64 `json:"observedGeneration,omitempty" protobuf:"varint,1,opt,name=observedGeneration"`
-	// Phase represents current status of the cluster
-	// +optional
-	Phase ClusterPhase `json:"phase,omitempty" protobuf:"bytes,2,opt,name=phase"`
-	// Reason explains the reason behind the cluster current phase
-	// +optional
-	Reason ClusterPhaseReason `json:"reason,omitempty" protobuf:"bytes,3,opt,name=reason"`
-	// Message specifies additional information regarding the possible actions for the user
-	// +optional
-	Message string `json:"message,omitempty" protobuf:"bytes,4,opt,name=message"`
-	// +optional
-	ClusterManagers []string `json:"clusterManagers,omitempty"`
-	// CAPIClusterInfo contains capi cluster information if the cluster is created by cluster-api
-	// +optional
-	CAPIClusterInfo *kmapi.CAPIClusterInfo `json:"capiClusterInfo,omitempty"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []ClusterInfo `json:"items,omitempty"`
 }

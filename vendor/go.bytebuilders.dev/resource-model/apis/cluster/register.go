@@ -17,4 +17,4 @@ limitations under the License.
 package cluster
 
 // GroupName is the group name use in this package
-const GroupName = "cluster.bytebuilders.dev"
+const GroupName = "cluster.appscode.com"
