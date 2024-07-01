@@ -19,7 +19,7 @@ package api
 import (
 	"time"
 
-	"gopkg.in/square/go-jose.v2/jwt"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 // LicenseVerificationParams represents the license token for verification
@@ -31,7 +31,7 @@ type LicenseVerificationParams struct {
 type License struct {
 	Issuer           string           `json:"issuer,omitempty"`
 	Subject          string           `json:"subject,omitempty"`
-	Audience         jwt.Audience     `json:"audience,omitempty"`
+	Audience         jwt.ClaimStrings `json:"audience,omitempty"`
 	Expiry           *jwt.NumericDate `json:"expiry,omitempty"`
 	NotBefore        *jwt.NumericDate `json:"not_before,omitempty"`
 	IssuedAt         *jwt.NumericDate `json:"issued_at,omitempty"`

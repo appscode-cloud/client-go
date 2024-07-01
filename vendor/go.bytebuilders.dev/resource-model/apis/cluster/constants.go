@@ -1,5 +1,5 @@
 /*
-Copyright 2020 AppsCode Inc.
+Copyright AppsCode Inc. and Contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,8 +25,15 @@ const (
 	LabelClusterImportType = "byte.builders/cluster-import-type"
 	LabelClusterExternalID = "byte.builders/cluster-external-id"
 
-	LabelClusterConnectorLinkID = "byte.builders/cluster-connector-link-id"
-	LabelTricksterReference     = "byte.builders/cluster"
+	LabelTricksterReference = "byte.builders/cluster"
+
+	LabelClusterManagerACE                         = "clustermanager.appscode.com/ace"
+	LabelClusterManagerOCMHub                      = "clustermanager.appscode.com/ocm-hub"
+	LabelClusterManagerOCMSpoke                    = "clustermanager.appscode.com/ocm-spoke"
+	LabelClusterManagerOCMMulticlusterControlplane = "clustermanager.appscode.com/ocm-mc"
+	LabelClusterManagerRancher                     = "clustermanager.appscode.com/rancher"
+	LabelClusterManagerOpenShift                   = "clustermanager.appscode.com/openshift"
+	LabelClusterManagerVCluster                    = "clustermanager.appscode.com/vcluster"
 )
 
 const (

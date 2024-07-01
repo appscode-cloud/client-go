@@ -50,6 +50,8 @@ func Resource(resource string) schema.GroupResource {
 func addKnownTypes(scheme *runtime.Scheme) error {
 	scheme.AddKnownTypes(SchemeGroupVersion,
 		&ChartPresetQuery{},
+		&ClusterProfile{},
+		&ClusterProfileList{},
 		&ClusterStatus{},
 		&ResourceCalculator{},
 		&ResourceDescriptor{},
@@ -58,6 +60,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&ResourceTableDefinitionList{},
 		&ResourceBlockDefinition{},
 		&ResourceBlockDefinitionList{},
+		&ResourceEditor{},
+		&ResourceEditorList{},
 		&ResourceOutline{},
 		&ResourceOutlineList{},
 		&ResourceLayout{},

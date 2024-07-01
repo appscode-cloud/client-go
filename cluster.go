@@ -156,7 +156,7 @@ func (c *Client) ReconfigureCluster(opts clustermodel.ReconfigureOptions, respon
 	if err != nil {
 		return nil, err
 	}
-	apiPath := fmt.Sprintf("/clustersv2/%s/%s/reconfigure", org, opts.Name)
+	apiPath := fmt.Sprintf("/clustersv2/%s/%s/reconfigure", org, opts.BasicInfo.Name)
 
 	params := make([]queryParams, 0)
 	if responseID != "" {

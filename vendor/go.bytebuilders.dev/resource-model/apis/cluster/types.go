@@ -1,5 +1,5 @@
 /*
-Copyright 2020 AppsCode Inc.
+Copyright AppsCode Inc. and Contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,8 +17,12 @@ limitations under the License.
 package cluster
 
 type BasicInfo struct {
-	Name        string `json:"name"`
-	DisplayName string `json:"displayName"`
+	Name         string `json:"name"`
+	DisplayName  string `json:"displayName"`
+	OwnerID      int64  `json:"ownerID,omitempty"`
+	UserID       int64  `json:"userID,omitempty"`
+	ClusterUID   string `json:"clusterUID,omitempty"`
+	HubClusterID string `json:"hubClusterID,omitempty"`
 }
 
 type ProviderOptions struct {
@@ -29,13 +33,13 @@ type ProviderOptions struct {
 	Region        string `json:"region,omitempty"`
 	ResourceGroup string `json:"resourceGroup,omitempty"`
 	KubeConfig    string `json:"kubeConfig,omitempty"`
-	LinkID        string `json:"linkID,omitempty"`
 }
 
 type ComponentOptions struct {
-	FluxCD      bool         `json:"fluxCD,omitempty"`
-	FeatureSets []FeatureSet `json:"featureSets,omitempty"`
-	AllFeatures bool         `json:"allFeatures,omitempty"`
+	FluxCD         bool         `json:"fluxCD,omitempty"`
+	FeatureSets    []FeatureSet `json:"featureSets,omitempty"`
+	AllFeatures    bool         `json:"allFeatures,omitempty"`
+	ClusterProfile string       `json:"clusterProfile,omitempty"`
 }
 
 type FeatureSet struct {
@@ -52,7 +56,8 @@ type GetOptions struct {
 }
 
 type CheckOptions struct {
-	Provider ProviderOptions `json:"provider"`
+	BasicInfo BasicInfo       `json:"basicInfo,omitempty"`
+	Provider  ProviderOptions `json:"provider"`
 }
 
 type ImportOptions struct {
@@ -68,7 +73,7 @@ type ConnectOptions struct {
 }
 
 type ReconfigureOptions struct {
-	Name       string           `json:"name"`
+	BasicInfo  BasicInfo        `json:"basicInfo"`
 	Components ComponentOptions `json:"components,omitempty"`
 }
 
