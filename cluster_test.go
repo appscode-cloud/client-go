@@ -24,10 +24,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.bytebuilders.dev/client"
 	clustermodel "go.bytebuilders.dev/resource-model/apis/cluster"
-	"go.bytebuilders.dev/resource-model/apis/cluster/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/kubernetes"
+	kmapi "kmodules.xyz/resource-metadata/apis/meta/v1alpha1"
 )
 
 var (
@@ -38,6 +38,7 @@ var (
 	TestClusterID           = "87873"
 	FeatureSetOpscenterCore = "opscenter-core"
 	FeatureKubeUIServer     = "kube-ui-server"
+	FeatureLicenseServer    = "license-proxyserver"
 )
 
 func TestClient_CheckClusterAPIs(t *testing.T) {
@@ -59,7 +60,7 @@ func TestClient_CheckClusterAPIs(t *testing.T) {
 		if !assert.Nil(t, err) {
 			return
 		}
-		assert.Equal(t, v1alpha1.ClusterPhaseNotImported, cluster.Status.Phase)
+		assert.Equal(t, kmapi.ClusterPhaseNotImported, cluster.Status.Phase)
 	})
 
 	t.Run("ImportCluster() should import the cluster", func(t *testing.T) {
@@ -67,12 +68,14 @@ func TestClient_CheckClusterAPIs(t *testing.T) {
 			BasicInfo: basicInfo,
 			Provider:  providerOptions,
 			Components: clustermodel.ComponentOptions{
-				FluxCD:        true,
-				LicenseServer: true,
+				FluxCD: true,
 				FeatureSets: []clustermodel.FeatureSet{
 					{
-						Name:     FeatureSetOpscenterCore,
-						Features: []string{FeatureKubeUIServer},
+						Name: FeatureSetOpscenterCore,
+						Features: []string{
+							FeatureKubeUIServer,
+							FeatureLicenseServer,
+						},
 					},
 				},
 			},
@@ -92,7 +95,7 @@ func TestClient_CheckClusterAPIs(t *testing.T) {
 		if !assert.Nil(t, err) {
 			return
 		}
-		assert.NotEqual(t, v1alpha1.ClusterPhaseNotImported, cluster.Status.Phase)
+		assert.NotEqual(t, kmapi.ClusterPhaseNotImported, cluster.Status.Phase)
 	})
 
 	t.Run("ListClusters() should return non empty cluster list when the cluster exist", func(t *testing.T) {
@@ -121,7 +124,7 @@ func TestClient_CheckClusterAPIs(t *testing.T) {
 		assert.Equal(t, TestClusterName, cluster.Spec.Name)
 		assert.Equal(t, TestClusterDisplayName, cluster.Spec.DisplayName)
 		assert.Equal(t, TestClusterProvider, string(cluster.Spec.Provider))
-		assert.Equal(t, v1alpha1.ClusterPhaseActive, cluster.Status.Phase)
+		assert.Equal(t, kmapi.ClusterPhaseActive, cluster.Status.Phase)
 	})
 
 	t.Run("GetClusterClientConfig() should return client-config for the cluster", func(t *testing.T) {
@@ -152,7 +155,7 @@ func TestClient_CheckClusterAPIs(t *testing.T) {
 		if !assert.Nil(t, err) {
 			return
 		}
-		assert.Equal(t, v1alpha1.ClusterPhaseActive, cluster.Status.Phase)
+		assert.Equal(t, kmapi.ClusterPhaseActive, cluster.Status.Phase)
 	})
 
 	// TODO: Remove cluster components, make the cluster NotReady, then run reconfigure.
@@ -168,12 +171,14 @@ func TestClient_CheckClusterAPIs(t *testing.T) {
 		err := c.RemoveCluster(clustermodel.RemovalOptions{
 			Name: TestClusterName,
 			Components: clustermodel.ComponentOptions{
-				FluxCD:        true,
-				LicenseServer: true,
+				FluxCD: true,
 				FeatureSets: []clustermodel.FeatureSet{
 					{
-						Name:     FeatureSetOpscenterCore,
-						Features: []string{FeatureKubeUIServer},
+						Name: FeatureSetOpscenterCore,
+						Features: []string{
+							FeatureKubeUIServer,
+							FeatureLicenseServer,
+						},
 					},
 				},
 			},
@@ -201,14 +206,14 @@ func TestClient_CheckClusterAPIs(t *testing.T) {
 }
 
 func waitForClusterToBeReady(c *client.Client, clusterName string) error {
-	return wait.PollImmediate(2*time.Second, 5*time.Minute, func() (done bool, err error) {
+	return wait.PollUntilContextTimeout(context.TODO(), 2*time.Second, 5*time.Minute, true, func(ctx context.Context) (done bool, err error) {
 		cluster, err := c.GetCluster(clustermodel.GetOptions{
 			Name: clusterName,
 		})
 		if err != nil {
 			return false, err
 		}
-		if cluster.Status.Phase == v1alpha1.ClusterPhaseActive {
+		if cluster.Status.Phase == kmapi.ClusterPhaseActive {
 			return true, nil
 		}
 		return false, nil
@@ -216,14 +221,14 @@ func waitForClusterToBeReady(c *client.Client, clusterName string) error {
 }
 
 func waitForClusterToBeRemoved(c *client.Client, opts clustermodel.ProviderOptions) error {
-	return wait.PollImmediate(2*time.Second, 5*time.Minute, func() (done bool, err error) {
+	return wait.PollUntilContextTimeout(context.TODO(), 2*time.Second, 5*time.Minute, true, func(ctx context.Context) (done bool, err error) {
 		cluster, err := c.CheckClusterExistence(clustermodel.CheckOptions{
 			Provider: opts,
 		})
 		if err != nil {
 			return false, err
 		}
-		if cluster.Status.Phase == v1alpha1.ClusterPhaseNotImported {
+		if cluster.Status.Phase == kmapi.ClusterPhaseNotImported {
 			return true, nil
 		}
 		return false, nil
