@@ -6,11 +6,12 @@ toolchain go1.22.4
 
 require (
 	github.com/golang-jwt/jwt/v5 v5.2.1
-	github.com/nats-io/nats.go v1.36.0
+	github.com/nats-io/nats.go v1.37.0
 	github.com/stretchr/testify v1.9.0
-	go.bytebuilders.dev/resource-model v0.0.11
-	k8s.io/apimachinery v0.30.1
-	k8s.io/client-go v0.30.1
+	go.bytebuilders.dev/resource-model v0.0.13-0.20240817060902-5c544790e4a4
+	k8s.io/apimachinery v0.30.2
+	k8s.io/client-go v0.30.2
+	kmodules.xyz/resource-metadata v0.18.10
 	x-helm.dev/apimachinery v0.0.16
 )
 
@@ -92,15 +93,14 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/api v0.30.1 // indirect
+	k8s.io/api v0.30.2 // indirect
 	k8s.io/apiextensions-apiserver v0.30.1 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20240430033511-f0e62f92d13f // indirect
 	k8s.io/utils v0.0.0-20240102154912-e7106e64919e // indirect
-	kmodules.xyz/client-go v0.30.8 // indirect
+	kmodules.xyz/client-go v0.30.9 // indirect
 	kmodules.xyz/go-containerregistry v0.0.12 // indirect
 	kmodules.xyz/offshoot-api v0.29.4 // indirect
-	kmodules.xyz/resource-metadata v0.18.9 // indirect
 	kmodules.xyz/resource-metrics v0.30.1 // indirect
 	sigs.k8s.io/controller-runtime v0.18.4 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
