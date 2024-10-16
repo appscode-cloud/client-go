@@ -18,6 +18,7 @@ package v1alpha1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	kmapi "kmodules.xyz/client-go/api/v1"
 	rsapi "kmodules.xyz/resource-metadata/apis/meta/v1alpha1"
 )
 
@@ -25,23 +26,6 @@ const (
 	ResourceKindClusterInfo = "ClusterInfo"
 	ResourceClusterInfo     = "clusterinfo"
 	ResourceClusterInfos    = "clusterinfos"
-)
-
-// +kubebuilder:validation:Enum=AKS;DigitalOcean;EKS;GKE;Linode;Packet;Scaleway;Vultr;Rancher;Generic
-type ProviderName string
-
-const (
-	ProviderAKS          ProviderName = "AKS"
-	ProviderDigitalOcean ProviderName = "DigitalOcean"
-	ProviderEKS          ProviderName = "EKS"
-	ProviderGKE          ProviderName = "GKE"
-	ProviderLinode       ProviderName = "Linode"
-	ProviderPacket       ProviderName = "Packet"
-	ProviderScaleway     ProviderName = "Scaleway"
-	ProviderVultr        ProviderName = "Vultr"
-	ProviderRancher      ProviderName = "Rancher"
-	ProviderGeneric      ProviderName = "Generic"
-	ProviderPrivate      ProviderName = "Private"
 )
 
 // +genclient
@@ -70,7 +54,7 @@ type ClusterInfoSpec struct {
 	OwnerName string `json:"ownerName,omitempty"`
 
 	//+optional
-	Provider ProviderName `json:"provider,omitempty"`
+	Provider kmapi.HostingProvider `json:"provider,omitempty"`
 	//+optional
 	Endpoint string `json:"endpoint,omitempty"`
 	//+optional

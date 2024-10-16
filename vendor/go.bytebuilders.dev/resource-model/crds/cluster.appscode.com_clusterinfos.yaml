@@ -70,13 +70,14 @@ spec:
                 - AKS
                 - DigitalOcean
                 - EKS
+                - Exoscale
+                - Generic
                 - GKE
                 - Linode
                 - Packet
+                - Rancher
                 - Scaleway
                 - Vultr
-                - Rancher
-                - Generic
                 type: string
               uid:
                 type: string
@@ -97,12 +98,53 @@ spec:
                   namespace:
                     type: string
                   provider:
+                    enum:
+                    - capa
+                    - capg
+                    - capz
                     type: string
+                required:
+                - clusterName
+                - namespace
+                - provider
                 type: object
               clusterManagers:
                 items:
                   type: string
                 type: array
+              clusterMetadata:
+                properties:
+                  apiEndpoint:
+                    type: string
+                  caBundle:
+                    type: string
+                  displayName:
+                    type: string
+                  name:
+                    type: string
+                  ownerID:
+                    type: string
+                  ownerType:
+                    type: string
+                  provider:
+                    enum:
+                    - AKS
+                    - DigitalOcean
+                    - EKS
+                    - Exoscale
+                    - Generic
+                    - GKE
+                    - Linode
+                    - Packet
+                    - Rancher
+                    - Scaleway
+                    - Vultr
+                    type: string
+                  uid:
+                    type: string
+                required:
+                - uid
+                type: object
               message:
                 description: Message specifies additional information regarding the
                   possible actions for the user
@@ -116,6 +158,7 @@ spec:
                 - NotConnected
                 - Registered
                 - NotImported
+                - Lost
                 type: string
               reason:
                 description: Reason explains the reason behind the cluster current

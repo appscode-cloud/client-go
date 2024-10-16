@@ -20,6 +20,7 @@ type BasicInfo struct {
 	Name         string `json:"name"`
 	DisplayName  string `json:"displayName"`
 	OwnerID      int64  `json:"ownerID,omitempty"`
+	ManagerID    int64  `json:"managerID,omitempty"`
 	UserID       int64  `json:"userID,omitempty"`
 	ClusterUID   string `json:"clusterUID,omitempty"`
 	HubClusterID string `json:"hubClusterID,omitempty"`
