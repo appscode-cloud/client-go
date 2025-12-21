@@ -58,10 +58,10 @@ func (c *Client) GetLicensePlan(licenseData, clusterID, productID string, produc
 		return "", fmt.Errorf("license isn't issued for this cluster")
 	} else if license.Status != "active" {
 		return "", fmt.Errorf("license status isn't active, current status: %s", license.Status)
-	} else if license.NotBefore.Time.Unix() > jwt.NewNumericDate(time.Now()).Time.Unix() {
-		return "", fmt.Errorf("license isn't active yet. It will be activated on %v", license.NotBefore.Time.UTC())
-	} else if license.Expiry.Time.Unix() < jwt.NewNumericDate(time.Now()).Time.Unix() {
-		return "", fmt.Errorf("license expired on: %v", license.Expiry.Time.UTC())
+	} else if license.NotBefore.Unix() > jwt.NewNumericDate(time.Now()).Unix() {
+		return "", fmt.Errorf("license isn't active yet. It will be activated on %v", license.NotBefore.UTC())
+	} else if license.Expiry.Unix() < jwt.NewNumericDate(time.Now()).Unix() {
+		return "", fmt.Errorf("license expired on: %v", license.Expiry.UTC())
 	}
 
 	prod, err := c.GetProductByID(productID)

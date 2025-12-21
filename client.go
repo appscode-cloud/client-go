@@ -134,7 +134,7 @@ func (c *Client) getResponse(method, path string, header http.Header, body io.Re
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() // nolint:errcheck
 
 	data, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -147,7 +147,7 @@ func (c *Client) getResponse(method, path string, header http.Header, body io.Re
 	return data, nil
 }
 
-func (c *Client) getParsedResponse(method, path string, header http.Header, body io.Reader, obj interface{}) error {
+func (c *Client) getParsedResponse(method, path string, header http.Header, body io.Reader, obj any) error {
 	data, err := c.getResponse(method, path, header, body)
 	if err != nil {
 		return err
@@ -160,7 +160,7 @@ func (c *Client) getResponseWithCookies(method, path string, header http.Header,
 	if err != nil {
 		return nil, nil, err
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() // nolint:errcheck
 
 	data, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -183,7 +183,7 @@ func (c *Client) getStatusCode(method, path string, header http.Header, body io.
 	if err != nil {
 		return -1, err
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() // nolint:errcheck
 
 	return resp.StatusCode, nil
 }
@@ -203,11 +203,11 @@ func parseStatusCode(statusCode int, data []byte) error {
 	}
 
 	if statusCode/100 != 2 {
-		errMap := make(map[string]interface{})
+		errMap := make(map[string]any)
 		if err := json.Unmarshal(data, &errMap); err != nil {
 			// when the JSON can't be parsed, data was probably empty or a plain string,
 			// so we try to return a helpful error anyway
-			return fmt.Errorf("Unknown API Error: %d %s", statusCode, string(data))
+			return fmt.Errorf("unknown API Error: %d %s", statusCode, string(data))
 		}
 		return errors.New(errMap["message"].(string))
 	}

@@ -187,7 +187,7 @@ func TestClient_getParsedResponse(t *testing.T) {
 		path   string
 		header http.Header
 		body   io.Reader
-		obj    interface{}
+		obj    any
 	}
 	tests := []struct {
 		name    string

@@ -47,7 +47,7 @@ func (c *Client) NewNatsConnection(name string) (*nats.Conn, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer os.Remove(credFile.Name())
+	defer os.Remove(credFile.Name()) // nolint:errcheck
 
 	return nats.Connect(
 		res.NatsEndpoints[0],
